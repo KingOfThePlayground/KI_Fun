@@ -45,6 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backend\Army.cs" />
+    <Compile Include="Backend\Country.cs" />
+    <Compile Include="Backend\Direction.cs" />
+    <Compile Include="Backend\Province.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
