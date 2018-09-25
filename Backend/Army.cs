@@ -10,7 +10,7 @@ namespace KI_Fun.Backend
     class Army : Wrapped
     {
         public const double MOVING_PROGRESS_NEEDED = 1d;
-        public const double ARMY_SPEED = 0.1d;
+        public const double ARMY_SPEED = 0.02d;
 
         public Army(int size, Country country)
         {

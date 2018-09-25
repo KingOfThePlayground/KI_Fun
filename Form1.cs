@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 using KI_Fun.Backend;
@@ -16,7 +17,7 @@ namespace KI_Fun
     public partial class FormMain : Form
     {
         List<BasePlayer> _players;
-        List<Brush> _brushes = new List<Brush>() {Brushes.Blue, Brushes.Red, Brushes.Green, Brushes.Yellow, Brushes.Cyan, Brushes.Violet, Brushes.Orange, Brushes.Brown, Brushes.White };
+        List<Brush> _brushes = new List<Brush>() { Brushes.Blue, Brushes.Red, Brushes.Green, Brushes.Yellow, Brushes.Cyan, Brushes.Violet, Brushes.Orange, Brushes.Brown, Brushes.White };
         Backend.Game _game;
         Dictionary<BasePlayer, Brush> _countryBrushes;
         Dictionary<BasePlayer, int> _playerNumber;
@@ -26,21 +27,25 @@ namespace KI_Fun
         int _provinceSize = 100;
         int _provincesPerRow = 8;
         int _fieldSize;
+        const int TICK_PHASE_MS = 50;
+
+        object _threadLock = new object();
 
         public FormMain()
         {
             _fieldSize = _provincesPerRow * _provinceSize;
             _countryBrushes = new Dictionary<BasePlayer, Brush>();
             _playerNumber = new Dictionary<BasePlayer, int>();
-            _players = new List<Backend.Player.BasePlayer>() { new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer() };
+            _players = new List<Backend.Player.BasePlayer>() { new Hibbelig(), new Hibbelig()};
             for (int i = 0; i < _players.Count; i++)
             {
                 _countryBrushes.Add(_players[i], _brushes[i]);
                 _playerNumber.Add(_players[i], i);
             }
-            _game = new Game(_players,_provincesPerRow);
+            _game = new Game(_players, _provincesPerRow);
             InitializeComponent();
             timer1.Start();
+            tickWorker.RunWorkerAsync();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -74,24 +79,28 @@ namespace KI_Fun
 
         private void pictureBoxMain_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.TranslateTransform(_xOriginMainPictureBox,_yOriginMainPictureBox);
+            e.Graphics.TranslateTransform(_xOriginMainPictureBox, _yOriginMainPictureBox);
             int xStep = _provinceSize, yStep = _provinceSize;
-            for (int y = 0; y < _game.FieldHeight; y++)
+
+            lock (_threadLock)
             {
-                for (int x = 0; x < _game.FieldWidth; x++)
+                for (int y = 0; y < _game.FieldHeight; y++)
                 {
-                    e.Graphics.FillRectangle(_countryBrushes[_game.Provinces[x, y].Owner.Owner], new RectangleF(x * xStep, y * yStep, xStep, yStep));
-                    e.Graphics.DrawRectangle(Pens.Black, new Rectangle(x * xStep, y * yStep, xStep, yStep));
+                    for (int x = 0; x < _game.FieldWidth; x++)
+                    {
+                        e.Graphics.FillRectangle(_countryBrushes[_game.Provinces[x, y].Owner.Owner], new RectangleF(x * xStep, y * yStep, xStep, yStep));
+                        e.Graphics.DrawRectangle(Pens.Black, new Rectangle(x * xStep, y * yStep, xStep, yStep));
+                    }
                 }
-            }
-            float anglePerPlayer = 360.0f / _countryBrushes.Count;
-            foreach (Army army in _game.Armies)
-            {
-                int x = army.InProvince.X;
-                int y = army.InProvince.Y;
-                RectangleF circle = new RectangleF((x + 0.2f) * _provinceSize, (y + 0.2f) * _provinceSize, 0.6f * _provinceSize, 0.6f * _provinceSize);
-                e.Graphics.FillEllipse(Brushes.Black, circle);
-                e.Graphics.FillPie(_countryBrushes[army.OwnerCountry.Owner], circle.X + 2, circle.Y + 2, circle.Width - 4, circle.Height - 4, _playerNumber[army.OwnerCountry.Owner] * anglePerPlayer - 90, anglePerPlayer);
+                float anglePerPlayer = 360.0f / _countryBrushes.Count;
+                foreach (Army army in _game.Armies)
+                {
+                    int x = army.InProvince.X;
+                    int y = army.InProvince.Y;
+                    RectangleF circle = new RectangleF((x + 0.2f) * _provinceSize, (y + 0.2f) * _provinceSize, 0.6f * _provinceSize, 0.6f * _provinceSize);
+                    e.Graphics.FillEllipse(Brushes.Black, circle);
+                    e.Graphics.FillPie(_countryBrushes[army.OwnerCountry.Owner], circle.X + 2, circle.Y + 2, circle.Width - 4, circle.Height - 4, _playerNumber[army.OwnerCountry.Owner] * anglePerPlayer - 90, anglePerPlayer);
+                }
             }
         }
 
@@ -101,19 +110,44 @@ namespace KI_Fun
             int y = e.Y - _yOriginMainPictureBox;
             int xProvince = x / _provinceSize;
             int yProvince = y / _provinceSize;
-            textBoxLog.AppendText($"Dies ist die Provinz mit den Koordinaten ({xProvince}, {yProvince}).\r\nSie gehört {_game.Provinces[xProvince, yProvince].Owner.Owner}.\r\n");
+            string ownerString; 
+
+            lock (_threadLock)
+            {
+                ownerString = _game.Provinces[xProvince, yProvince].Owner.Owner.ToString();
+            }
+            textBoxLog.AppendText($"Dies ist die Provinz mit den Koordinaten ({xProvince}, {yProvince}).\r\nSie gehört {ownerString}.\r\n");
+        }
+
+        private void tickWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+
+            while (true)
+            {
+                watch.Restart();
+                lock (_threadLock)
+                {
+                    _game.Tick();
+                }
+                if(watch.ElapsedMilliseconds < TICK_PHASE_MS)
+                Thread.Sleep(TICK_PHASE_MS-(int)watch.ElapsedMilliseconds);
+            }
         }
 
         private void pictureBoxOverview_Paint(object sender, PaintEventArgs e)
         {
             float xStep = pictureBoxOverview.ClientSize.Width / _game.FieldWidth;
             float yStep = pictureBoxOverview.ClientSize.Height / _game.FieldHeight;
-        
-            for (int y = 0; y < _game.FieldHeight; y++)
+
+            lock (_threadLock)
             {
-                for (int x = 0; x < _game.FieldWidth; x++)
-                {                   
-                    e.Graphics.FillRectangle(_countryBrushes[_game.Provinces[x, y].Owner.Owner],new RectangleF(x * xStep, y * yStep, xStep, yStep));
+                for (int y = 0; y < _game.FieldHeight; y++)
+                {
+                    for (int x = 0; x < _game.FieldWidth; x++)
+                    {
+                        e.Graphics.FillRectangle(_countryBrushes[_game.Provinces[x, y].Owner.Owner], new RectangleF(x * xStep, y * yStep, xStep, yStep));
+                    }
                 }
             }
         }

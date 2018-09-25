@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace KI_Fun.Backend
 {
-    public enum Direction { North, South, East, West, None }
+    public enum Direction { None, East, North, West, South}
 }
