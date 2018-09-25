@@ -10,5 +10,7 @@ namespace KI_Fun.Backend.Player
     interface IPlayer
     {
         void MakeMove(GameAPI api);
+
+        Country Country { get; set; }
     }
 }
