@@ -9,11 +9,11 @@ namespace KI_Fun.Backend
 {
     class Country
     {
-        double _money;
+        double _money=0;
         HashSet<Province> _provinces;
         public HashSet<Province> Provinces { get => _provinces; }
 
-        HashSet<Army> _armies;
+        public HashSet<Army> Armies { get; protected set; }
         IPlayer _ownerPlayer;
         public IPlayer Owner { get => _ownerPlayer; }
 
@@ -21,6 +21,7 @@ namespace KI_Fun.Backend
         {
             _provinces = new HashSet<Province>();
             _ownerPlayer = owner;
+            Armies = new HashSet<Army>();
         }
     }
 }

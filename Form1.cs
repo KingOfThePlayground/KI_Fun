@@ -21,7 +21,6 @@ namespace KI_Fun
 
         public FormMain()
         {
-            
             _countryBrushes = new Dictionary<IPlayer, Brush>();
             List<Backend.Player.IPlayer> players = new List<Backend.Player.IPlayer>() { new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer() };
             for (int i = 0; i < players.Count; i++)

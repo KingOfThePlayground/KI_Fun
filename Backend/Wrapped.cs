@@ -5,12 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KI_Fun.Backend.Player
+namespace KI_Fun.Backend
 {
-    interface IPlayer
+    abstract class Wrapped
     {
-        void MakeMove(GameApi api);
-
-        Country Country { get; set; }
+        public Api Api { get; protected set; }
     }
 }

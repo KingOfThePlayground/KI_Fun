@@ -6,13 +6,19 @@ using System.Threading.Tasks;
 
 namespace KI_Fun.Backend.API
 {
-    class GameAPI
+    class GameApi : Api
     {
         private Game _game;
 
-        public GameAPI(Game game)
+        public GameApi(Game game) : base(game)
         {
             _game = game;
+        }
+
+        public bool IsArmyMoveAllowed(ArmyApi armyApi, Direction direction)
+        {
+            Army army = armyApi.Inner as Army;
+            return false;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace KI_Fun.Backend.Player
     {
         public Country Country { get; set; }
 
-        public void MakeMove(GameAPI api)
+        public void MakeMove(GameApi api)
         {
             throw new NotImplementedException();
         }
