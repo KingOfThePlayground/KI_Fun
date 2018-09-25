@@ -9,23 +9,9 @@ namespace KI_Fun.Backend.Player
 {
     class DummyPlayer : BasePlayer
     {
-        static int counter = 1;
-        public Country Country { get; set; }
-
-        String _name;
-
-        public DummyPlayer()
-        {
-            _name = "DummyPlayer" + counter++;
-        }
-        public void MakeMove(GameApi api)
+        public override void MakeMove(GameApi api)
         {
             throw new NotImplementedException();
-        }
-
-        public override string ToString()
-        {
-            return _name;
         }
     }
 }
