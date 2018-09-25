@@ -28,8 +28,8 @@ namespace KI_Fun.Backend
             Api = new GameApi(this);
             _players = players;
             _fieldSize = fieldSize;
-
             setupCountries();
+            setupProvinces();
         }
 
         private void setupCountries()
@@ -83,6 +83,7 @@ namespace KI_Fun.Backend
         {
             Army army = new Army(size, country);
             army.InProvince = province;
+            Armies.Add(army);
             province.ArmiesInProvince.Add(army);
             country.Armies.Add(army);
         }
@@ -123,7 +124,15 @@ namespace KI_Fun.Backend
             }
         }
 
+        public bool IsArmyAllowedInProvince(Army army, Province province)
+        {
+            return army.BlackFlagged || IsCountryAllowedInCountry(army.OwnerCountry, province.Owner);
+        }
 
+        public bool IsCountryAllowedInCountry(Country armyOwnerCountry, Country provinceOwnerCountry)
+        {
+            return armyOwnerCountry.MarchAccess.Contains(provinceOwnerCountry) || armyOwnerCountry.War.Contains(provinceOwnerCountry);
+        }
 
         private void moveArmy(Army army)
         {
@@ -132,28 +141,10 @@ namespace KI_Fun.Backend
             if (army.MovingProgress > Army.MOVING_PROGRESS_NEEDED)
             {
                 Province from = army.InProvince;
-                Province to=null;
-                
-                switch (army.MovingDirection)
-                {
-                    case Direction.East:
-                        to = _provinces[from.X - 1, from.Y];
-                        break;
 
-                    case Direction.West:
-                        to = _provinces[from.X - 1, from.Y];
-                        break;
+                TryGetMoveTarget(from, army.MovingDirection, out Province to);
 
-                    case Direction.North:
-                        to = _provinces[from.X - 1, from.Y];
-                        break;
-
-                    case Direction.South:
-                        to = _provinces[from.X - 1, from.Y];
-                        break;
-                }
-
-                if (to.ArmyAllowedInProvince(army))
+                if (IsArmyAllowedInProvince(army,to))
                 {
                     army.InProvince = to;
                     from.ArmiesInProvince.Remove(army);

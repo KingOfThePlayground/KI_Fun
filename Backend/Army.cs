@@ -20,6 +20,7 @@ namespace KI_Fun.Backend
             Api = new ArmyApi(this);
         }
 
+        public bool BlackFlagged { get; set; }
         public int Size { get; set; }
         public Direction MovingDirection { get; set; }
         public double MovingProgress { get; set; }
@@ -35,6 +36,7 @@ namespace KI_Fun.Backend
             if (MovingDirection == Direction.None)
                 return;
             MovingProgress += ARMY_SPEED;
+            BlackFlagged = false;
         }
     }
 }

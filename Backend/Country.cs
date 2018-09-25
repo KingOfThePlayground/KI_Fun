@@ -17,11 +17,16 @@ namespace KI_Fun.Backend
         IPlayer _ownerPlayer;
         public IPlayer Owner { get => _ownerPlayer; }
 
+        public HashSet<Country> War { get; protected set; }
+        public HashSet<Country> MarchAccess { get; protected set; }
+
         public Country(IPlayer owner)
         {
             _provinces = new HashSet<Province>();
             _ownerPlayer = owner;
             Armies = new HashSet<Army>();
+            War = new HashSet<Country>();
+            MarchAccess = new HashSet<Country>();
         }
     }
 }
