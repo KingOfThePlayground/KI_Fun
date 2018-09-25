@@ -30,6 +30,7 @@ namespace KI_Fun.Backend
             _fieldSize = fieldSize;
 
             setupCountries();
+            setupProvinces();
         }
 
         private void setupCountries()
