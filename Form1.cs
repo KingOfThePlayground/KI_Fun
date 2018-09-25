@@ -74,6 +74,12 @@ namespace KI_Fun
                     e.Graphics.DrawRectangle(Pens.Black, new Rectangle(x * xStep, y * yStep, xStep, yStep));
                 }
             }
+            foreach (Army army in _game.Armies)
+            {
+                int x = army.InProvince.X;
+                int y = army.InProvince.Y;
+                e.Graphics.FillEllipse(Brushes.Black, new RectangleF((x + 0.1f)*_provinceSize, (y + 0.1f)*_provinceSize, 0.2f*_provinceSize, 0.2f * _provinceSize));
+            }
         }
 
         private void pictureBoxMain_MouseClick(object sender, MouseEventArgs e)
@@ -82,6 +88,7 @@ namespace KI_Fun
             int y = e.Y - _yOriginMainPictureBox;
             int xProvince = x / _provinceSize;
             int yProvince = y / _provinceSize;
+            textBoxLog.Text = $"Dies ist die Provinz mit den Koordinaten ({xProvince}, {yProvince})\r\nSie gehört {_game.Provinces[xProvince, yProvince].Owner.Owner}";
         }
 
         private void pictureBoxOverview_Paint(object sender, PaintEventArgs e)
