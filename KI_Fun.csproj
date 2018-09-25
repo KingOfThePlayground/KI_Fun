@@ -64,6 +64,7 @@
     <Compile Include="Backend\Country.cs" />
     <Compile Include="Backend\Direction.cs" />
     <Compile Include="Backend\Game.cs" />
+    <Compile Include="Backend\Player\DummyPlayer.cs" />
     <Compile Include="Backend\Player\IPlayer.cs" />
     <Compile Include="Backend\API\GameAPI.cs" />
     <Compile Include="Backend\Province.cs" />
