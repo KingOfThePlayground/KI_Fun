@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace KI_Fun.Backend.API
 {
-    class ArmyApi : Api
+    class ProvinceApi : Api
     {
-        public ArmyApi(Army inner) : base (inner){ }
         
+        public ProvinceApi(Province inner) : base(inner)
+        {
+        }
     }
 }

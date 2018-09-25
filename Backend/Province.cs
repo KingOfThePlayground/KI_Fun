@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KI_Fun.Backend
 {
-    class Province
+    class Province : Wrapped
     {
         Country _owner;
         public Country Owner { get => _owner; set => _owner = value; }

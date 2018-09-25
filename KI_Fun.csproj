@@ -68,6 +68,7 @@
     <Compile Include="Backend\API\CountryApi.cs" />
     <Compile Include="Backend\API\ApiCollection.cs" />
     <Compile Include="Backend\API\Api.cs" />
+    <Compile Include="Backend\API\ProvinceApi.cs" />
     <Compile Include="Backend\Army.cs" />
     <Compile Include="Backend\Country.cs" />
     <Compile Include="Backend\Direction.cs" />
