@@ -14,13 +14,13 @@ namespace KI_Fun.Backend
         public HashSet<Province> Provinces { get => _provinces; }
 
         public HashSet<Army> Armies { get; protected set; }
-        IPlayer _ownerPlayer;
-        public IPlayer Owner { get => _ownerPlayer; }
+        Player.BasePlayer _ownerPlayer;
+        public BasePlayer Owner { get => _ownerPlayer; }
 
         public HashSet<Country> War { get; protected set; }
         public HashSet<Country> MarchAccess { get; protected set; }
 
-        public Country(IPlayer owner)
+        public Country(Player.BasePlayer owner)
         {
             _provinces = new HashSet<Province>();
             _ownerPlayer = owner;

@@ -42,11 +42,11 @@
             // 
             this.textBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxLog.Location = new System.Drawing.Point(694, 433);
+            this.textBoxLog.Location = new System.Drawing.Point(563, 535);
             this.textBoxLog.Multiline = true;
             this.textBoxLog.Name = "textBoxLog";
             this.textBoxLog.ReadOnly = true;
-            this.textBoxLog.Size = new System.Drawing.Size(385, 203);
+            this.textBoxLog.Size = new System.Drawing.Size(516, 101);
             this.textBoxLog.TabIndex = 0;
             // 
             // pictureBoxMain
@@ -54,9 +54,10 @@
             this.pictureBoxMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxMain.Location = new System.Drawing.Point(12, 12);
+            this.pictureBoxMain.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBoxMain.Location = new System.Drawing.Point(12, 11);
             this.pictureBoxMain.Name = "pictureBoxMain";
-            this.pictureBoxMain.Size = new System.Drawing.Size(676, 624);
+            this.pictureBoxMain.Size = new System.Drawing.Size(545, 624);
             this.pictureBoxMain.TabIndex = 1;
             this.pictureBoxMain.TabStop = false;
             this.pictureBoxMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxMain_Paint);
@@ -69,9 +70,10 @@
             // pictureBoxOverview
             // 
             this.pictureBoxOverview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxOverview.Location = new System.Drawing.Point(694, 11);
+            this.pictureBoxOverview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBoxOverview.Location = new System.Drawing.Point(563, 11);
             this.pictureBoxOverview.Name = "pictureBoxOverview";
-            this.pictureBoxOverview.Size = new System.Drawing.Size(384, 416);
+            this.pictureBoxOverview.Size = new System.Drawing.Size(516, 516);
             this.pictureBoxOverview.TabIndex = 2;
             this.pictureBoxOverview.TabStop = false;
             this.pictureBoxOverview.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxOverview_Paint);

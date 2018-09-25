@@ -15,26 +15,30 @@ namespace KI_Fun
 {
     public partial class FormMain : Form
     {
+        List<BasePlayer> _players;
         List<Brush> _brushes = new List<Brush>() {Brushes.Blue, Brushes.Red, Brushes.Green, Brushes.Yellow, Brushes.Cyan, Brushes.Violet, Brushes.Orange, Brushes.Brown, Brushes.White };
         Backend.Game _game;
-        Dictionary<IPlayer, Brush> _countryBrushes;
+        Dictionary<BasePlayer, Brush> _countryBrushes;
+        Dictionary<BasePlayer, int> _playerNumber;
         int _xOriginMainPictureBox = 0;
         int _yOriginMainPictureBox = 0;
         bool _moveUp = false, _moveDown = false, _moveLeft = false, _moveRight = false;
-        int _provinceSize = 60;
+        int _provinceSize = 100;
         int _provincesPerRow = 16;
         int _fieldSize;
 
         public FormMain()
         {
             _fieldSize = _provincesPerRow * _provinceSize;
-            _countryBrushes = new Dictionary<IPlayer, Brush>();
-            List<Backend.Player.IPlayer> players = new List<Backend.Player.IPlayer>() { new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer() };
-            for (int i = 0; i < players.Count; i++)
+            _countryBrushes = new Dictionary<BasePlayer, Brush>();
+            _playerNumber = new Dictionary<BasePlayer, int>();
+            _players = new List<Backend.Player.BasePlayer>() { new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer() };
+            for (int i = 0; i < _players.Count; i++)
             {
-                _countryBrushes.Add(players[i], _brushes[i]);
+                _countryBrushes.Add(_players[i], _brushes[i]);
+                _playerNumber.Add(_players[i], i);
             }
-            _game = new Game(players,_provincesPerRow);
+            _game = new Game(_players,_provincesPerRow);
             InitializeComponent();
             timer1.Start();
         }
@@ -74,11 +78,14 @@ namespace KI_Fun
                     e.Graphics.DrawRectangle(Pens.Black, new Rectangle(x * xStep, y * yStep, xStep, yStep));
                 }
             }
+            float anglePerPlayer = 360.0f / _countryBrushes.Count;
             foreach (Army army in _game.Armies)
             {
                 int x = army.InProvince.X;
                 int y = army.InProvince.Y;
-                e.Graphics.FillEllipse(Brushes.Black, new RectangleF((x + 0.1f)*_provinceSize, (y + 0.1f)*_provinceSize, 0.2f*_provinceSize, 0.2f * _provinceSize));
+                RectangleF circle = new RectangleF((x + 0.2f) * _provinceSize, (y + 0.2f) * _provinceSize, 0.6f * _provinceSize, 0.6f * _provinceSize);
+                e.Graphics.FillEllipse(Brushes.Black, circle);
+                e.Graphics.FillPie(_countryBrushes[army.OwnerCountry.Owner], circle.X + 2, circle.Y + 2, circle.Width - 4, circle.Height - 4, _playerNumber[army.OwnerCountry.Owner] * anglePerPlayer - 90, anglePerPlayer);
             }
         }
 
@@ -88,14 +95,14 @@ namespace KI_Fun
             int y = e.Y - _yOriginMainPictureBox;
             int xProvince = x / _provinceSize;
             int yProvince = y / _provinceSize;
-            textBoxLog.Text = $"Dies ist die Provinz mit den Koordinaten ({xProvince}, {yProvince})\r\nSie gehört {_game.Provinces[xProvince, yProvince].Owner.Owner}";
+            textBoxLog.Text = $"Dies ist die Provinz mit den Koordinaten ({xProvince}, {yProvince}).\r\nSie gehört {_game.Provinces[xProvince, yProvince].Owner.Owner}.\r\n";
         }
 
         private void pictureBoxOverview_Paint(object sender, PaintEventArgs e)
         {
             float xStep = pictureBoxOverview.ClientSize.Width / _game.FieldWidth;
             float yStep = pictureBoxOverview.ClientSize.Height / _game.FieldHeight;
- 
+        
             for (int y = 0; y < _game.FieldHeight; y++)
             {
                 for (int x = 0; x < _game.FieldWidth; x++)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KI_Fun.Backend.Player
 {
-    interface IPlayer
+    interface BasePlayer
     {
         void MakeMove(GameApi api);
 

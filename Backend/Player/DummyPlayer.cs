@@ -7,7 +7,7 @@ using KI_Fun.Backend.API;
 
 namespace KI_Fun.Backend.Player
 {
-    class DummyPlayer : IPlayer
+    class DummyPlayer : BasePlayer
     {
         static int counter = 1;
         public Country Country { get; set; }
@@ -16,7 +16,7 @@ namespace KI_Fun.Backend.Player
 
         public DummyPlayer()
         {
-            _name = "Player " + counter++;
+            _name = "DummyPlayer" + counter++;
         }
         public void MakeMove(GameApi api)
         {

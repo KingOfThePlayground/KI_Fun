@@ -10,7 +10,7 @@ namespace KI_Fun.Backend
 {
     class Game : Wrapped
     {
-        List<IPlayer> _players;
+        List<Player.BasePlayer> _players;
 
         Province[,] _provinces;
         public Province[,] Provinces { get => _provinces; }
@@ -23,7 +23,7 @@ namespace KI_Fun.Backend
 
         public int FieldHeight { get => _fieldSize; }
 
-        public Game(List<IPlayer> players, int fieldSize)
+        public Game(List<Player.BasePlayer> players, int fieldSize)
         {
             Api = new GameApi(this);
             _players = players;
@@ -70,7 +70,7 @@ namespace KI_Fun.Backend
 
         public void Tick()
         {
-            foreach (IPlayer p in _players)
+            foreach (Player.BasePlayer p in _players)
                 p.MakeMove((GameApi)(Api));
 
             foreach(Army a in Armies)
@@ -153,7 +153,7 @@ namespace KI_Fun.Backend
             }
         }
 
-        public IPlayer GetOwnerOfProvince(int x, int y)
+        public BasePlayer GetOwnerOfProvince(int x, int y)
         {
             if (x < 0 || x >= _fieldSize || y < 0 || y >= _fieldSize)
                 throw new ArgumentOutOfRangeException("Punkt nicht im Feld enthalten");
