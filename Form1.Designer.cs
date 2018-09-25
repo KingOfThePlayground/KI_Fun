@@ -42,10 +42,12 @@
             // 
             this.textBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxLog.Cursor = System.Windows.Forms.Cursors.Default;
             this.textBoxLog.Location = new System.Drawing.Point(563, 535);
             this.textBoxLog.Multiline = true;
             this.textBoxLog.Name = "textBoxLog";
             this.textBoxLog.ReadOnly = true;
+            this.textBoxLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxLog.Size = new System.Drawing.Size(516, 101);
             this.textBoxLog.TabIndex = 0;
             // 
