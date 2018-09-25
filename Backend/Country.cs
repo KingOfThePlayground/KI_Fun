@@ -14,7 +14,7 @@ namespace KI_Fun.Backend
         public HashSet<Province> Provinces { get => _provinces; }
 
         public HashSet<Army> Armies { get; protected set; }
-        Player.BasePlayer _ownerPlayer;
+        BasePlayer _ownerPlayer;
         public BasePlayer Owner { get => _ownerPlayer; }
 
         public HashSet<Country> War { get; protected set; }

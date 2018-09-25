@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KI_Fun.Backend
 {
-    class Game : Wrapped
+    class Game
     {
         List<Player.BasePlayer> _players;
 
@@ -25,7 +25,6 @@ namespace KI_Fun.Backend
 
         public Game(List<Player.BasePlayer> players, int fieldSize)
         {
-            Api = new GameApi(this);
             _players = players;
             _fieldSize = fieldSize;
             setupCountries();
@@ -71,7 +70,7 @@ namespace KI_Fun.Backend
         public void Tick()
         {
             foreach (Player.BasePlayer p in _players)
-                p.MakeMove((GameApi)(Api));
+                p.MakeMove(new GameApi(this, p));
 
             foreach(Army a in Armies)
             {
@@ -149,6 +148,10 @@ namespace KI_Fun.Backend
                     army.InProvince = to;
                     from.ArmiesInProvince.Remove(army);
                     to.ArmiesInProvince.Add(army);
+                    if (army.MoveQueue.Count == 0)
+                        army.MovingDirection = Direction.None;
+                    else
+                        army.MovingDirection = army.MoveQueue.Dequeue();
                 }
             }
         }
