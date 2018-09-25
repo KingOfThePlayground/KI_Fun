@@ -26,9 +26,10 @@ namespace KI_Fun.Backend
         public Game(List<IPlayer> players, int fieldSize)
         {
             _players = players;
+            _countries = new List<Country>();
 
             for (int i = 0; i < players.Count; i++) {
-                _countries[i] = new Country(_players[i]);
+                _countries.Add(new Country(_players[i]));
                 _players[i].Country = _countries[i];
             }
 
@@ -55,7 +56,44 @@ namespace KI_Fun.Backend
 
             foreach(Army a in _armies)
             {
-                a.Move(Army.ARMY_SPEED);
+                moveArmy(a);
+            }
+        }
+
+        private void moveArmy(Army army)
+        {
+            army.ProgressMove();
+
+            if (army.MovingProgress > Army.MOVING_PROGRESS_NEEDED)
+            {
+                Province from = army.InProvince;
+                Province to=null;
+                
+                switch (army.MovingDirection)
+                {
+                    case Direction.East:
+                        to = _provinces[from.X - 1, from.Y];
+                        break;
+
+                    case Direction.West:
+                        to = _provinces[from.X - 1, from.Y];
+                        break;
+
+                    case Direction.North:
+                        to = _provinces[from.X - 1, from.Y];
+                        break;
+
+                    case Direction.South:
+                        to = _provinces[from.X - 1, from.Y];
+                        break;
+                }
+
+                if (to.ArmyAllowedInProvince(army))
+                {
+                    army.InProvince = to;
+                    from.ArmiesInProvince.Remove(army);
+                    to.ArmiesInProvince.Add(army);
+                }
             }
         }
 

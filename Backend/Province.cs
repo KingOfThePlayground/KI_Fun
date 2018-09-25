@@ -11,6 +11,8 @@ namespace KI_Fun.Backend
         Country _owner;
         public Country Owner { get => _owner; set => _owner = value; }
 
+        public HashSet<Army> ArmiesInProvince { get; private set; }
+
         readonly int _x;
         readonly int _y;
 
@@ -22,6 +24,12 @@ namespace KI_Fun.Backend
         {
             _x = x;
             _y = y;
+            ArmiesInProvince = new HashSet<Army>();
+        }
+
+        public bool ArmyAllowedInProvince(Army army)
+        {
+            throw new NotImplementedException();
         }
     }
 }
