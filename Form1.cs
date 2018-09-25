@@ -24,7 +24,7 @@ namespace KI_Fun
         int _yOriginMainPictureBox = 0;
         bool _moveUp = false, _moveDown = false, _moveLeft = false, _moveRight = false;
         int _provinceSize = 100;
-        int _provincesPerRow = 16;
+        int _provincesPerRow = 8;
         int _fieldSize;
 
         public FormMain()
@@ -64,6 +64,12 @@ namespace KI_Fun
             }
             pictureBoxMain.Refresh();
             pictureBoxOverview.Refresh();
+
+            while (Backend.Player.Message.LogQueue.Count != 0)
+            {
+                Backend.Player.Message.LogQueue.TryDequeue(out var msg);
+                textBoxLog.AppendText(msg.ToString());
+            }
         }
 
         private void pictureBoxMain_Paint(object sender, PaintEventArgs e)
@@ -95,7 +101,7 @@ namespace KI_Fun
             int y = e.Y - _yOriginMainPictureBox;
             int xProvince = x / _provinceSize;
             int yProvince = y / _provinceSize;
-            textBoxLog.Text = $"Dies ist die Provinz mit den Koordinaten ({xProvince}, {yProvince}).\r\nSie gehört {_game.Provinces[xProvince, yProvince].Owner.Owner}.\r\n";
+            textBoxLog.AppendText($"Dies ist die Provinz mit den Koordinaten ({xProvince}, {yProvince}).\r\nSie gehört {_game.Provinces[xProvince, yProvince].Owner.Owner}.\r\n");
         }
 
         private void pictureBoxOverview_Paint(object sender, PaintEventArgs e)

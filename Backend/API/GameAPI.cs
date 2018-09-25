@@ -18,6 +18,8 @@ namespace KI_Fun.Backend.API
             _player = player;
         }
 
+        public CountryApi CountryApi { get => (CountryApi)_player.Country.Api; }
+
         public bool TryDeclareWar(Country country)
         {
             if (country.MarchAccess.Contains(country) || country.War.Contains(country))
