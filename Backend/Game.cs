@@ -92,10 +92,10 @@ namespace KI_Fun.Backend
             switch (direction)
             {
                 case Direction.East:
-                    return (province.X - 1, province.Y);
+                    return (province.X + 1, province.Y);
 
                 case Direction.West:
-                    return (province.X + 1, province.Y);
+                    return (province.X - 1, province.Y);
 
                 case Direction.North:
                     return (province.X, province.Y-1);
@@ -139,6 +139,7 @@ namespace KI_Fun.Backend
 
             if (army.MovingProgress > Army.MOVING_PROGRESS_NEEDED)
             {
+                army.MovingProgress = 0d;
                 Province from = army.InProvince;
 
                 TryGetMoveTarget(from, army.MovingDirection, out Province to);

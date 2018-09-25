@@ -27,6 +27,7 @@ namespace KI_Fun.Backend
             Armies = new HashSet<Army>();
             War = new HashSet<Country>();
             MarchAccess = new HashSet<Country>();
+            MarchAccess.Add(this);
             Api = new API.CountryApi(this);
         }
     }

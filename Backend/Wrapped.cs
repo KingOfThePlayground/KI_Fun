@@ -9,6 +9,18 @@ namespace KI_Fun.Backend
 {
     abstract class Wrapped
     {
-        public Api Api { get; protected set; }
+        private Api _api;
+        public Api Api
+        {
+            get
+            {
+                return _api;
+            }
+            set
+            {
+                _api = value;
+                GameApi.AddAccess(this);
+            }
+        }
     }
 }

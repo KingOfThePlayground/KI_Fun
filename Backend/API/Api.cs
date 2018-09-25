@@ -8,11 +8,11 @@ namespace KI_Fun.Backend.API
 {
     abstract class Api
     {
-        public Wrapped Inner { get; protected set; }
+        protected Wrapped _inner;
 
         public Api(Wrapped inner)
         {
-            Inner = inner;
+            _inner = inner;
         }
     }
 }

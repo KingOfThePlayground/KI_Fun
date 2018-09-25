@@ -12,13 +12,21 @@ namespace KI_Fun.Backend.API
         private Game _game;
         private Player.BasePlayer _player;
 
+        private static Dictionary<Api, Wrapped> _accessDictionary = new Dictionary<Api, Wrapped>();
+
         public GameApi(Game game, Player.BasePlayer player)
         {
             _game = game;
             _player = player;
         }
 
-        public CountryApi CountryApi { get => (CountryApi)_player.Country.Api; }
+        public CountryApi Country { get => (CountryApi)_player.Country.Api; }
+
+        public static void AddAccess(Wrapped wrapped)
+        {
+            if (!_accessDictionary.ContainsKey(wrapped.Api))
+                _accessDictionary.Add(wrapped.Api, wrapped);
+        }
 
         public bool TryDeclareWar(Country country)
         {
@@ -37,7 +45,7 @@ namespace KI_Fun.Backend.API
         {
             if (IsArmyMovePossible(armyApi, direction))
             {
-                Army army = (Army)armyApi.Inner;
+                Army army = (Army)_accessDictionary[armyApi];
                 if (army.OwnerCountry.Owner != _player)
                     throw new AccessViolationException("Zugriff auf fremde Armee");
                 army.MoveQueue.Enqueue(direction);
@@ -49,7 +57,7 @@ namespace KI_Fun.Backend.API
 
         public void EnqueMarchOrder(ArmyApi armyApi, Direction direction)
         {
-            Army army = (Army)armyApi.Inner;
+            Army army = (Army)_accessDictionary[armyApi];
             if (army.OwnerCountry.Owner != _player)
                 throw new AccessViolationException("Zugriff auf fremde Armee");
             army.MoveQueue.Enqueue(direction);
@@ -57,12 +65,12 @@ namespace KI_Fun.Backend.API
 
         public bool TryGetMoveTarget(ArmyApi armyApi, Direction direction, out Province target)
         {
-            return _game.TryGetMoveTarget(((Army)armyApi.Inner).InProvince, direction, out target);
+            return _game.TryGetMoveTarget(((Army)(Army)_accessDictionary[armyApi]).InProvince, direction, out target);
         }
 
         public bool IsArmyMovePossible(ArmyApi armyApi, Direction direction)
         {
-            Army army = armyApi.Inner as Army;
+            Army army = (Army)_accessDictionary[armyApi];
             if (_game.TryGetMoveTarget(army.InProvince, direction, out Province target))
                 return _game.IsArmyAllowedInProvince(army, target);
             else

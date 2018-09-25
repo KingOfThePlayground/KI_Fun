@@ -72,6 +72,7 @@
     <Compile Include="Backend\Country.cs" />
     <Compile Include="Backend\Direction.cs" />
     <Compile Include="Backend\Game.cs" />
+    <Compile Include="Backend\Player\Hibbelig.cs" />
     <Compile Include="Backend\Player\Message.cs" />
     <Compile Include="Backend\Player\WarDeclarationMessage.cs" />
     <Compile Include="Backend\Wrapped.cs" />
