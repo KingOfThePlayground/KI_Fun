@@ -51,7 +51,7 @@ namespace KI_Fun
         private void timer1_Tick(object sender, EventArgs e)
         {
             int stepSize = timer1.Interval / 10;
-            if (_moveDown && -_yOriginMainPictureBox + pictureBoxMain.Bottom < _fieldSize)
+            if (_moveDown && -_yOriginMainPictureBox + pictureBoxMain.Height < _fieldSize)
             {
                 _yOriginMainPictureBox -= stepSize;
             }
@@ -59,7 +59,7 @@ namespace KI_Fun
             {
                 _yOriginMainPictureBox += stepSize;
             }
-            if (_moveRight && -_xOriginMainPictureBox + pictureBoxMain.Right < _fieldSize)
+            if (_moveRight && -_xOriginMainPictureBox + pictureBoxMain.Width < _fieldSize)
             {
                 _xOriginMainPictureBox -= stepSize;
             }
