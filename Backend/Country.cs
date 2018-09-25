@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KI_Fun.Backend.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,7 @@ namespace KI_Fun.Backend
         double _money;
         HashSet<Province> _provinces;
         HashSet<Army> _armies;
+        IPlayer _ownerPlayer;
+        public IPlayer Player { get => _ownerPlayer; }
     }
 }

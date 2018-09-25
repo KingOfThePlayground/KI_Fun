@@ -9,5 +9,19 @@ namespace KI_Fun.Backend
     class Province
     {
         Country _owner;
+        public Country Owner { get => _owner; set => _owner = value; }
+
+        readonly int _x;
+        readonly int _y;
+
+        public int X { get => _x; }
+
+        public int Y { get => _y; }
+
+        public Province(int x, int y)
+        {
+            _x = x;
+            _y = y;
+        }
     }
 }
