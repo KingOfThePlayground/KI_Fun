@@ -27,6 +27,7 @@ namespace KI_Fun.Backend
         {
             _players = players;
             _countries = new List<Country>();
+            _fieldSize = fieldSize;
 
             for (int i = 0; i < players.Count; i++) {
                 _countries.Add(new Country(_players[i]));

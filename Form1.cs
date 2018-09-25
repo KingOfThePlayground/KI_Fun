@@ -23,12 +23,12 @@ namespace KI_Fun
         {
             
             _countryBrushes = new Dictionary<IPlayer, Brush>();
-            List<Backend.Player.IPlayer> players = new List<Backend.Player.IPlayer>() { new DummyPlayer(), new DummyPlayer()};
+            List<Backend.Player.IPlayer> players = new List<Backend.Player.IPlayer>() { new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer() };
             for (int i = 0; i < players.Count; i++)
             {
                 _countryBrushes.Add(players[i], _brushes[i]);
             }
-            _game = new Game(players,8);
+            _game = new Game(players,32);
             InitializeComponent();
         }
 
@@ -45,12 +45,13 @@ namespace KI_Fun
 
         private void pictureBoxOverview_Paint(object sender, PaintEventArgs e)
         {
-            float xStep = pictureBoxOverview.Width / _game.FieldWidth;
-            float yStep = pictureBoxOverview.Height / _game.FieldHeight;
+            float xStep = pictureBoxOverview.ClientSize.Width / _game.FieldWidth;
+            float yStep = pictureBoxOverview.ClientSize.Height / _game.FieldHeight;
+ 
             for (int y = 0; y < _game.FieldHeight; y++)
             {
                 for (int x = 0; x < _game.FieldWidth; x++)
-                {                                                                           
+                {                   
                     e.Graphics.FillRectangle(_countryBrushes[_game.Provinces[x, y].Owner.Owner],new RectangleF(x * xStep, y * yStep, xStep, yStep));
                 }
             }
