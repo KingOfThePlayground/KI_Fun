@@ -7,7 +7,7 @@ using KI_Fun.Backend.API;
 
 namespace KI_Fun.Backend.Player
 {
-    class DummyPlayer : IPlayer
+    class DummyPlayer : BasePlayer
     {
         public Country Country { get; set; }
 

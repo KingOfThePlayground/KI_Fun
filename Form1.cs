@@ -17,7 +17,7 @@ namespace KI_Fun
     {
         List<Brush> _brushes = new List<Brush>() {Brushes.Blue, Brushes.Red, Brushes.Green, Brushes.Yellow, Brushes.Cyan, Brushes.Violet, Brushes.Orange, Brushes.Brown, Brushes.White };
         Backend.Game _game;
-        Dictionary<IPlayer, Brush> _countryBrushes;
+        Dictionary<BasePlayer, Brush> _countryBrushes;
         int _xOriginMainPictureBox = 0;
         int _yOriginMainPictureBox = 0;
         bool _moveUp = false, _moveDown = false, _moveLeft = false, _moveRight = false;
@@ -28,8 +28,8 @@ namespace KI_Fun
         public FormMain()
         {
             _fieldSize = _provincesPerRow * _provinceSize;
-            _countryBrushes = new Dictionary<IPlayer, Brush>();
-            List<Backend.Player.IPlayer> players = new List<Backend.Player.IPlayer>() { new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer() };
+            _countryBrushes = new Dictionary<BasePlayer, Brush>();
+            List<Backend.Player.BasePlayer> players = new List<Backend.Player.BasePlayer>() { new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer() };
             for (int i = 0; i < players.Count; i++)
             {
                 _countryBrushes.Add(players[i], _brushes[i]);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KI_Fun.Backend.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,28 @@ using System.Threading.Tasks;
 
 namespace KI_Fun.Backend.API
 {
-    class GameApi : Api
+    class GameApi
     {
         private Game _game;
+        private Player.BasePlayer _player;
 
-        public GameApi(Game game) : base(game)
+        public GameApi(Game game, Player.BasePlayer player)
         {
             _game = game;
+            _player = player;
+        }
+
+        public bool TryDeclareWar(Country country)
+        {
+            if (country.MarchAccess.Contains(country) || country.War.Contains(country))
+                return false;
+            else
+            {
+                country.War.Add(_player.Country);
+                _player.Country.War.Add(country);
+                country.Owner.MessageQueue.Enqueue(new WarDeclarationMessage(_player.Country));
+                return true;
+            }
         }
 
         public bool TrySendArmy(ArmyApi armyApi, Direction direction)
@@ -20,16 +36,20 @@ namespace KI_Fun.Backend.API
             if (IsArmyMovePossible(armyApi, direction))
             {
                 Army army = (Army)armyApi.Inner;
+                if (army.OwnerCountry.Owner != _player)
+                    throw new AccessViolationException("Zugriff auf fremde Armee");
                 army.MoveQueue.Enqueue(direction);
                 return true;
             }
             else
-            return false;
+                return false;
         }
 
         public void EnqueMarchOrder(ArmyApi armyApi, Direction direction)
         {
             Army army = (Army)armyApi.Inner;
+            if (army.OwnerCountry.Owner != _player)
+                throw new AccessViolationException("Zugriff auf fremde Armee");
             army.MoveQueue.Enqueue(direction);
         }
 

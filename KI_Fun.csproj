@@ -71,9 +71,11 @@
     <Compile Include="Backend\Country.cs" />
     <Compile Include="Backend\Direction.cs" />
     <Compile Include="Backend\Game.cs" />
+    <Compile Include="Backend\Player\Message.cs" />
+    <Compile Include="Backend\Player\WarDeclarationMessage.cs" />
     <Compile Include="Backend\Wrapped.cs" />
     <Compile Include="Backend\Player\DummyPlayer.cs" />
-    <Compile Include="Backend\Player\IPlayer.cs" />
+    <Compile Include="Backend\Player\BasePlayer.cs" />
     <Compile Include="Backend\API\GameApi.cs" />
     <Compile Include="Backend\Province.cs" />
     <Compile Include="Form1.cs">
