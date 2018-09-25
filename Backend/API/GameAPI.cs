@@ -26,7 +26,7 @@ namespace KI_Fun.Backend.API
             {
                 country.War.Add(_player.Country);
                 _player.Country.War.Add(country);
-                country.Owner.MessageQueue.Enqueue(new WarDeclarationMessage(_player.Country));
+                country.Owner.MessageQueue.Enqueue(new WarDeclarationMessage(_player.Country, country));
                 return true;
             }
         }
