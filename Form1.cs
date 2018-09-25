@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace KI_Fun
 {
-    public partial class Form1 : Form
+    public partial class ForMain : Form
     {
-        public Form1()
+        public ForMain()
         {
             InitializeComponent();
         }
