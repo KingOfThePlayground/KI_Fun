@@ -42,12 +42,11 @@
             // 
             this.textBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxLog.Location = new System.Drawing.Point(925, 533);
-            this.textBoxLog.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxLog.Location = new System.Drawing.Point(694, 433);
             this.textBoxLog.Multiline = true;
             this.textBoxLog.Name = "textBoxLog";
             this.textBoxLog.ReadOnly = true;
-            this.textBoxLog.Size = new System.Drawing.Size(512, 249);
+            this.textBoxLog.Size = new System.Drawing.Size(385, 203);
             this.textBoxLog.TabIndex = 0;
             // 
             // pictureBoxMain
@@ -55,13 +54,13 @@
             this.pictureBoxMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxMain.Location = new System.Drawing.Point(16, 15);
-            this.pictureBoxMain.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBoxMain.Location = new System.Drawing.Point(12, 12);
             this.pictureBoxMain.Name = "pictureBoxMain";
-            this.pictureBoxMain.Size = new System.Drawing.Size(901, 768);
+            this.pictureBoxMain.Size = new System.Drawing.Size(676, 624);
             this.pictureBoxMain.TabIndex = 1;
             this.pictureBoxMain.TabStop = false;
             this.pictureBoxMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxMain_Paint);
+            this.pictureBoxMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMain_MouseClick);
             // 
             // timer1
             // 
@@ -70,25 +69,26 @@
             // pictureBoxOverview
             // 
             this.pictureBoxOverview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxOverview.Location = new System.Drawing.Point(925, 13);
-            this.pictureBoxOverview.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBoxOverview.Location = new System.Drawing.Point(694, 11);
             this.pictureBoxOverview.Name = "pictureBoxOverview";
-            this.pictureBoxOverview.Size = new System.Drawing.Size(512, 512);
+            this.pictureBoxOverview.Size = new System.Drawing.Size(384, 416);
             this.pictureBoxOverview.TabIndex = 2;
             this.pictureBoxOverview.TabStop = false;
             this.pictureBoxOverview.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxOverview_Paint);
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1455, 798);
+            this.ClientSize = new System.Drawing.Size(1091, 648);
             this.Controls.Add(this.pictureBoxOverview);
             this.Controls.Add(this.pictureBoxMain);
             this.Controls.Add(this.textBoxLog);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.KeyPreview = true;
             this.Name = "FormMain";
             this.Text = "KI Fun";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMain)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOverview)).EndInit();
             this.ResumeLayout(false);
