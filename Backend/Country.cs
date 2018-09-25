@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KI_Fun.Backend
 {
-    class Country
+    class Country : Wrapped
     {
         double _money=0;
         HashSet<Province> _provinces;
@@ -27,6 +27,7 @@ namespace KI_Fun.Backend
             Armies = new HashSet<Army>();
             War = new HashSet<Country>();
             MarchAccess = new HashSet<Country>();
+            Api = new API.CountryApi(this);
         }
     }
 }

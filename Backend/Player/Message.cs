@@ -9,12 +9,13 @@ namespace KI_Fun.Backend.Player
 {
     abstract class Message
     {
-        static ConcurrentQueue<Message> LogQueue = new ConcurrentQueue<Message>();
+        public static ConcurrentQueue<Message> LogQueue = new ConcurrentQueue<Message>();
         public MessageType MessageType { get; private set; }
 
         public Message(MessageType messageType)
         {
             MessageType = messageType;
+            LogQueue.Enqueue(this);
         }
 
         public override string ToString()

@@ -65,7 +65,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backend\API\ArmyApi.cs" />
-    <Compile Include="Backend\API\EnumerableApi.cs" />
+    <Compile Include="Backend\API\CountryApi.cs" />
+    <Compile Include="Backend\API\ApiCollection.cs" />
     <Compile Include="Backend\API\Api.cs" />
     <Compile Include="Backend\Army.cs" />
     <Compile Include="Backend\Country.cs" />

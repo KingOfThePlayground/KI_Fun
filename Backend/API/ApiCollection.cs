@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace KI_Fun.Backend.API
 {
-    class EnumerableAPI<T_Api> : IEnumerable<T_Api> where T_Api : Api
+    class ApiCollection<T_Api> : IEnumerable<T_Api> where T_Api : Api
     {
         IEnumerable<Wrapped> _inner;
 
-        public EnumerableAPI(IEnumerable<Wrapped> inner)
+        public ApiCollection(IEnumerable<Wrapped> inner)
         {
             _inner = inner;
         }
