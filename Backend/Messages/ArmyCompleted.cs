@@ -8,5 +8,8 @@ namespace KI_Fun.Backend.Messages
 {
     class ArmyCompleted : Message
     {
+        public ArmyCompleted() : base(MessageType.ArmyCompleted)
+        {
+        }
     }
 }
