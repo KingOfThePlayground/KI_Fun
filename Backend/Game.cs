@@ -69,7 +69,7 @@ namespace KI_Fun.Backend
 
         public void Tick()
         {
-            foreach (Player.BasePlayer p in _players)
+            foreach (BasePlayer p in _players)
                 p.MakeMove(new GameApi(this, p));
 
             foreach (Army a in Armies)
@@ -80,6 +80,30 @@ namespace KI_Fun.Backend
             foreach (Province province in _provinces)
             {
                 ProcessBattles(province.ArmiesInProvince);
+            }
+        }
+
+        private void moveArmy(Army army)
+        {
+            army.ProgressMove();
+
+            if (army.MovingProgress > Army.MOVING_PROGRESS_NEEDED)
+            {
+                army.MovingProgress = 0d;
+                Province from = army.InProvince;
+
+                TryGetMoveTarget(from, army.MovingDirection, out Province to);
+
+                if (IsArmyAllowedInProvince(army, to))
+                {
+                    army.InProvince = to;
+                    from.ArmiesInProvince.Remove(army);
+                    to.ArmiesInProvince.Add(army);
+                    if (army.MoveQueue.Count == 0)
+                        army.MovingDirection = Direction.None;
+                    else
+                        army.MovingDirection = army.MoveQueue.Dequeue();
+                }
             }
         }
 
@@ -136,30 +160,6 @@ namespace KI_Fun.Backend
         public bool IsCountryAllowedInCountry(Country armyOwnerCountry, Country provinceOwnerCountry)
         {
             return armyOwnerCountry.MarchAccess.Contains(provinceOwnerCountry) || armyOwnerCountry.War.Contains(provinceOwnerCountry);
-        }
-
-        private void moveArmy(Army army)
-        {
-            army.ProgressMove();
-
-            if (army.MovingProgress > Army.MOVING_PROGRESS_NEEDED)
-            {
-                army.MovingProgress = 0d;
-                Province from = army.InProvince;
-
-                TryGetMoveTarget(from, army.MovingDirection, out Province to);
-
-                if (IsArmyAllowedInProvince(army,to))
-                {
-                    army.InProvince = to;
-                    from.ArmiesInProvince.Remove(army);
-                    to.ArmiesInProvince.Add(army);
-                    if (army.MoveQueue.Count == 0)
-                        army.MovingDirection = Direction.None;
-                    else
-                        army.MovingDirection = army.MoveQueue.Dequeue();
-                }
-            }
         }
 
         public BasePlayer GetOwnerOfProvince(int x, int y)

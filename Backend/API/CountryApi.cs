@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KI_Fun.Backend.API
 {
@@ -14,6 +11,17 @@ namespace KI_Fun.Backend.API
         public CountryApi(Country inner) : base(inner)
         {
             _country = inner;
+        }
+
+        public int FieldWidth { get => _country.AllProvinces.GetLength(0); }
+        public int FieldHeight { get => _country.AllProvinces.GetLength(1); }
+
+        public ProvinceApi GetProvinceAt(int x, int y)
+        {
+            if (x >= 0 && x < FieldWidth && y >= 0 && y < FieldHeight)
+                return (ProvinceApi)_country.AllProvinces[x, y].Api;
+            else
+                throw new ArgumentOutOfRangeException("Die Koordinaten sind außerhalb der Karte.");
         }
     }
 }

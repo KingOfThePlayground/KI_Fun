@@ -5,8 +5,8 @@ namespace KI_Fun.Backend
 {
     abstract class Wrapped
     {
-        private Api _api;
-        public Api Api
+        protected Api _api;
+        public virtual Api Api
         {
             get
             {
@@ -15,7 +15,7 @@ namespace KI_Fun.Backend
             set
             {
                 _api = value;
-                GameApi.AddAccess(this);
+                GameApi.AddInner(this);
             }
         }
 
@@ -53,6 +53,22 @@ namespace KI_Fun.Backend
         private bool coordinateNeighbourhoodCheck(int x_1, int y_1, int x_2, int y_2)
         {
             return (x_1 - x_2) * (x_1 - x_2) + (y_1 - y_2) * (y_1 - y_2) < 3;
+        }
+    }
+
+    abstract class Wrapped<T_API> : Wrapped where T_API : Api
+    {
+        public new T_API Api
+        {
+            get
+            {
+                return (T_API)_api;
+            }
+            set
+            {
+                _api = value;
+                GameApi.AddInner(this);
+            }
         }
     }
 }

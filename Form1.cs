@@ -1,16 +1,13 @@
-﻿using System;
+﻿using KI_Fun.Backend;
+using KI_Fun.Backend.Player;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
-
-using KI_Fun.Backend;
-using KI_Fun.Backend.Player;
 
 namespace KI_Fun
 {
@@ -28,15 +25,17 @@ namespace KI_Fun
         int _provincesPerRow = 8;
         int _fieldSize;
         const int TICK_PHASE_MS = 50;
+        ConcurrentQueue<Backend.Messages.Message> _logQueue;
 
         object _threadLock = new object();
 
         public FormMain()
         {
+            _logQueue = new ConcurrentQueue<Backend.Messages.Message>();
             _fieldSize = _provincesPerRow * _provinceSize;
             _countryBrushes = new Dictionary<BasePlayer, Brush>();
             _playerNumber = new Dictionary<BasePlayer, int>();
-            _players = new List<Backend.Player.BasePlayer>() { new Hibbelig(), new Hibbelig()};
+            _players = new List<Backend.Player.BasePlayer>() { new Hibbelig(), new Hibbelig(), new Hibbelig(), new Hibbelig() };
             for (int i = 0; i < _players.Count; i++)
             {
                 _countryBrushes.Add(_players[i], _brushes[i]);
@@ -70,10 +69,10 @@ namespace KI_Fun
             pictureBoxMain.Refresh();
             pictureBoxOverview.Refresh();
 
-            while (Backend.Player.Message.LogQueue.Count != 0)
+            while (_logQueue.Count != 0)
             {
-                Backend.Player.Message.LogQueue.TryDequeue(out var msg);
-                textBoxLog.AppendText(msg.ToString());
+                if (_logQueue.TryDequeue(out var msg))
+                    textBoxLog.AppendText(msg.ToString());
             }
         }
 
@@ -110,7 +109,7 @@ namespace KI_Fun
             int y = e.Y - _yOriginMainPictureBox;
             int xProvince = x / _provinceSize;
             int yProvince = y / _provinceSize;
-            string ownerString; 
+            string ownerString;
 
             lock (_threadLock)
             {
@@ -130,8 +129,8 @@ namespace KI_Fun
                 {
                     _game.Tick();
                 }
-                if(watch.ElapsedMilliseconds < TICK_PHASE_MS)
-                Thread.Sleep(TICK_PHASE_MS-(int)watch.ElapsedMilliseconds);
+                if (watch.ElapsedMilliseconds < TICK_PHASE_MS)
+                    Thread.Sleep(TICK_PHASE_MS - (int)watch.ElapsedMilliseconds);
             }
         }
 
