@@ -33,7 +33,7 @@ namespace KI_Fun.Backend.API
             {
                 country.War.Add(_player.Country);
                 _player.Country.War.Add(country);
-                country.Player.MessageQueue.Enqueue(new WarDeclarationMessage(_player.Country, country));
+                country.Player.MessageQueue.Enqueue(new DiplomaticMessage(MessageType.WarDeclaration, _player.Country, country));
                 return true;
             }
         }
