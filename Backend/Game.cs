@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KI_Fun.Backend
 {
-    class Game
+    partial class Game
     {
         List<Player.BasePlayer> _players;
 
@@ -72,9 +72,14 @@ namespace KI_Fun.Backend
             foreach (Player.BasePlayer p in _players)
                 p.MakeMove(new GameApi(this, p));
 
-            foreach(Army a in Armies)
+            foreach (Army a in Armies)
             {
                 moveArmy(a);
+            }
+
+            foreach (Province province in _provinces)
+            {
+                ProcessBattles(province.ArmiesInProvince);
             }
         }
 
