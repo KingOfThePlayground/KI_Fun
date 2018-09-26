@@ -13,11 +13,12 @@ namespace KI_Fun.Backend.Player
         static int counter = 0;
         private string _name;
 
-        public ConcurrentQueue<Message> MessageQueue;
+        public ConcurrentQueue<Message> MessageQueue { get; private set; }
 
         public BasePlayer()
         {
             _name = this.GetType().Name + counter++;
+            MessageQueue = new ConcurrentQueue<Message>();
         }
 
         public abstract void MakeMove(GameApi api);

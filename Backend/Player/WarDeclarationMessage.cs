@@ -19,7 +19,7 @@ namespace KI_Fun.Backend.Player
 
         public override string ToString()
         {
-            return $"{Declarer.Owner} hat {DeclaredUpon.Owner} den Krieg erklärt.";
+            return $"{Declarer.Player} hat {DeclaredUpon.Player} den Krieg erklärt.";
         }
     }
 }

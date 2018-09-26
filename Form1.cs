@@ -88,7 +88,7 @@ namespace KI_Fun
                 {
                     for (int x = 0; x < _game.FieldWidth; x++)
                     {
-                        e.Graphics.FillRectangle(_countryBrushes[_game.Provinces[x, y].Owner.Owner], new RectangleF(x * xStep, y * yStep, xStep, yStep));
+                        e.Graphics.FillRectangle(_countryBrushes[_game.Provinces[x, y].Owner.Player], new RectangleF(x * xStep, y * yStep, xStep, yStep));
                         e.Graphics.DrawRectangle(Pens.Black, new Rectangle(x * xStep, y * yStep, xStep, yStep));
                     }
                 }
@@ -99,7 +99,7 @@ namespace KI_Fun
                     int y = army.InProvince.Y;
                     RectangleF circle = new RectangleF((x + 0.2f) * _provinceSize, (y + 0.2f) * _provinceSize, 0.6f * _provinceSize, 0.6f * _provinceSize);
                     e.Graphics.FillEllipse(Brushes.Black, circle);
-                    e.Graphics.FillPie(_countryBrushes[army.OwnerCountry.Owner], circle.X + 2, circle.Y + 2, circle.Width - 4, circle.Height - 4, _playerNumber[army.OwnerCountry.Owner] * anglePerPlayer - 90, anglePerPlayer);
+                    e.Graphics.FillPie(_countryBrushes[army.Owner.Player], circle.X + 2, circle.Y + 2, circle.Width - 4, circle.Height - 4, _playerNumber[army.Owner.Player] * anglePerPlayer - 90, anglePerPlayer);
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace KI_Fun
 
             lock (_threadLock)
             {
-                ownerString = _game.Provinces[xProvince, yProvince].Owner.Owner.ToString();
+                ownerString = _game.Provinces[xProvince, yProvince].Owner.Player.ToString();
             }
             textBoxLog.AppendText($"Dies ist die Provinz mit den Koordinaten ({xProvince}, {yProvince}).\r\nSie gehört {ownerString}.\r\n");
         }
@@ -146,7 +146,7 @@ namespace KI_Fun
                 {
                     for (int x = 0; x < _game.FieldWidth; x++)
                     {
-                        e.Graphics.FillRectangle(_countryBrushes[_game.Provinces[x, y].Owner.Owner], new RectangleF(x * xStep, y * yStep, xStep, yStep));
+                        e.Graphics.FillRectangle(_countryBrushes[_game.Provinces[x, y].Owner.Player], new RectangleF(x * xStep, y * yStep, xStep, yStep));
                     }
                 }
             }

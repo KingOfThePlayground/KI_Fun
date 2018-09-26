@@ -125,7 +125,7 @@ namespace KI_Fun.Backend
 
         public bool IsArmyAllowedInProvince(Army army, Province province)
         {
-            return army.BlackFlagged || IsCountryAllowedInCountry(army.OwnerCountry, province.Owner);
+            return army.BlackFlagged || IsCountryAllowedInCountry(army.Owner, province.Owner);
         }
 
         public bool IsCountryAllowedInCountry(Country armyOwnerCountry, Country provinceOwnerCountry)
@@ -162,7 +162,7 @@ namespace KI_Fun.Backend
             if (x < 0 || x >= _fieldSize || y < 0 || y >= _fieldSize)
                 throw new ArgumentOutOfRangeException("Punkt nicht im Feld enthalten");
             else
-                return _provinces[x, y].Owner.Owner;
+                return _provinces[x, y].Owner.Player;
         }
     }
 }
