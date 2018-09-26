@@ -11,10 +11,7 @@ namespace KI_Fun.Backend.Player
     {
         public override void MakeMove(GameApi api)
         {
-            //foreach (ArmyApi armyApi in api.CountryApi.Armies)
-            //{
-               
-            //}
+
         }
     }
 }

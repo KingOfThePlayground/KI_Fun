@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KI_Fun.Backend.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,16 @@ namespace KI_Fun.Backend.API
         public int Y { get => _province.Y; }
         public CountryApi Owner{ get => (CountryApi)_province.Owner.Api; }
 
+        public bool TryGetArmies(BasePlayer player, out ApiCollection<ArmyApi> armies)
+        {
+            if (_province.IsNeighbouring(player))
+            {
+                armies = new ApiCollection<ArmyApi>(_province.ArmiesInProvince);
+                return true;
+            }
+            armies = null;
+            return false;
+        }
 
         public ProvinceApi(Province inner) : base(inner)
         {
