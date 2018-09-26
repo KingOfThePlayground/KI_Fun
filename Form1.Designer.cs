@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.textBoxLog = new System.Windows.Forms.TextBox();
             this.pictureBoxMain = new System.Windows.Forms.PictureBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.tickWorker = new System.ComponentModel.BackgroundWorker();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pictureBoxOverview = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMain)).BeginInit();
@@ -104,7 +104,7 @@
 
         private System.Windows.Forms.TextBox textBoxLog;
         private System.Windows.Forms.PictureBox pictureBoxMain;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.ComponentModel.BackgroundWorker tickWorker;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.PictureBox pictureBoxOverview;
     }
