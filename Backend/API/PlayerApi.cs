@@ -9,7 +9,6 @@ namespace KI_Fun.Backend.API
 {
     class PlayerApi : Api
     {
-        CountryApi Country { get => ((BasePlayer)_inner).Country.Api; }
         public PlayerApi(Wrapped inner) : base(inner)
         {
         }

@@ -9,7 +9,7 @@ using KI_Fun.Backend.Messages;
 
 namespace KI_Fun.Backend.Player
 {
-    abstract class BasePlayer : Wrapped<PlayerApi>
+    abstract class BasePlayer
     {
         static int counter = 0;
         private string _name;
@@ -23,8 +23,6 @@ namespace KI_Fun.Backend.Player
         }
 
         public abstract void MakeMove(GameApi api);
-
-        public Country Country { get; set; }
 
         public override string ToString()
         {

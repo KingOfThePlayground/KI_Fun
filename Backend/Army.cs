@@ -13,7 +13,7 @@ namespace KI_Fun.Backend
         public const double MOVING_PROGRESS_NEEDED = 1d;
         public const double ARMY_SPEED = 0.02d;
 
-        public Army(int size, Country country)
+        public Army(Game game, int size, Country country) : base(game)
         {
             Size = size;
             Owner = country;
@@ -33,7 +33,17 @@ namespace KI_Fun.Backend
 
         public override bool IsNeighbouring(BasePlayer player)
         {
-            return IsNeighbouring(player, X, Y);
+            return IsNeighbouring(player, Owner.AllProvinces, X, Y);
+        }
+
+        public bool TryGetMoveTarget(Direction direction, out Province target)
+        {
+            return _game.TryGetMoveTarget(InProvince, direction, out target);
+        }
+
+        public bool IsArmyAllowedInProvince(Province target)
+        {
+            return BlackFlagged || Owner.IsAllowedInCountry(target.Owner);
         }
 
         public void ProgressMove()

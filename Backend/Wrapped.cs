@@ -1,11 +1,19 @@
 ﻿using KI_Fun.Backend.API;
 using KI_Fun.Backend.Player;
+using System.Collections.Generic;
 
 namespace KI_Fun.Backend
 {
     abstract class Wrapped
     {
+        protected Game _game;
         protected Api _api;
+
+        protected Wrapped(Game game)
+        {
+            _game = game;
+        }
+
         public virtual Api Api
         {
             get
@@ -15,10 +23,9 @@ namespace KI_Fun.Backend
             set
             {
                 _api = value;
-                GameApi.AddInner(this);
             }
         }
-
+        
         public Country Owner { get; set; }
 
         public virtual bool IsNeighbouring(BasePlayer player)
@@ -26,11 +33,10 @@ namespace KI_Fun.Backend
             return false;
         }
 
-        public bool IsNeighbouring(BasePlayer player, int x, int y)
+        public bool IsNeighbouring(BasePlayer player, Province[,] provinces, int x, int y)
         {
-            Country country = player.Country;
-            int fieldWidth = country.AllProvinces.GetLength(0);
-            int fieldHeight = country.AllProvinces.GetLength(1);
+            int fieldWidth = provinces.GetLength(0);
+            int fieldHeight = provinces.GetLength(1);
             Province p;
 
             for (int i = x - 1; i <= x + 1; i++)
@@ -38,11 +44,11 @@ namespace KI_Fun.Backend
                 {
                     if (i >= 0 && i < fieldWidth && j >= 0 && j < fieldHeight)
                     {
-                        p = country.AllProvinces[i, j];
-                        if (p.Owner == country)
+                        p = provinces[i, j];
+                        if (p.Owner.Player == player)
                             return true;
                         foreach (Army a in p.ArmiesInProvince)
-                            if (a.Owner == country)
+                            if (a.Owner.Player == player)
                                 return true;
                     }
                 }
@@ -58,6 +64,10 @@ namespace KI_Fun.Backend
 
     abstract class Wrapped<T_API> : Wrapped where T_API : Api
     {
+        protected Wrapped(Game game) : base(game)
+        {
+        }
+
         public new T_API Api
         {
             get
@@ -67,7 +77,6 @@ namespace KI_Fun.Backend
             set
             {
                 _api = value;
-                GameApi.AddInner(this);
             }
         }
     }

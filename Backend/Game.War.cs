@@ -45,6 +45,8 @@ namespace KI_Fun.Backend
                     }
                 }
             }
+            if (warPairs.Count == 0)
+                return;
             Random r = new Random();
             (Country, Country) theChosenOnes = warPairs[r.Next(0, warPairs.Count)];
             (int lossA, int lossB) = computeBattleResults(armiesOfCountry[theChosenOnes.Item1], armiesOfCountry[theChosenOnes.Item2]);

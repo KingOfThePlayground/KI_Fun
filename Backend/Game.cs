@@ -2,9 +2,6 @@
 using KI_Fun.Backend.Player;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KI_Fun.Backend
 {
@@ -37,8 +34,7 @@ namespace KI_Fun.Backend
 
             for (int i = 0; i < _players.Count; i++)
             {
-                _countries.Add(new Country(_players[i],_provinces));
-                _players[i].Country = _countries[i];
+                _countries.Add(new Country(this, _players[i]));
             }
         }
 
@@ -54,7 +50,7 @@ namespace KI_Fun.Backend
             for (int y = 0; y < FieldHeight; y++)
                 for (int x = 0; x < FieldWidth; x++)
                 {
-                    p = new Province(x, y);
+                    p = new Province(this, x, y);
                     _provinces[x, y] = p;
                     int ownerNum = rand.Next(0, _players.Count);
                     p.Owner = _countries[ownerNum];
@@ -69,18 +65,45 @@ namespace KI_Fun.Backend
 
         public void Tick()
         {
-            foreach (BasePlayer p in _players)
-                p.MakeMove(new GameApi(this, p));
+            foreach (Country c in _countries)
+            {
+                c.CalculateMoney();
+                if (c.Money < 0)
+                {
+                    foreach(Army a in c.Armies)
+                    {
+                        Armies.Remove(a);
+                        a.InProvince.ArmiesInProvince.Remove(a);
+                    }
+
+                    c.Armies.Clear();
+                    
+                }
+                c.Player.MakeMove(new GameApi(this, c));
+            }
 
             foreach (Army a in Armies)
             {
+                blackflag(a);
                 moveArmy(a);
             }
 
             foreach (Province province in _provinces)
             {
-                ProcessBattles(province.ArmiesInProvince);
+                if (province.IsBuildingArmy)
+                {
+                    if (province.ProcessArmyBuilding())
+                    {
+                        CreateArmy(province.Owner, province, 1000);
+                    }
+                }
+                processBattles(province.ArmiesInProvince);
             }
+        }
+
+        private void blackflag(Army army)
+        {
+            army.BlackFlagged = army.IsArmyAllowedInProvince(army.InProvince);
         }
 
         private void moveArmy(Army army)
@@ -94,7 +117,7 @@ namespace KI_Fun.Backend
 
                 TryGetMoveTarget(from, army.MovingDirection, out Province to);
 
-                if (IsArmyAllowedInProvince(army, to))
+                if (army.IsArmyAllowedInProvince(to))
                 {
                     army.InProvince = to;
                     from.ArmiesInProvince.Remove(army);
@@ -109,11 +132,12 @@ namespace KI_Fun.Backend
 
         public void CreateArmy(Country country, Province province, int size)
         {
-            Army army = new Army(size, country);
+            Army army = new Army(this, size, country);
             army.InProvince = province;
             Armies.Add(army);
             province.ArmiesInProvince.Add(army);
             country.Armies.Add(army);
+            new Messages.ArmyCompleted(province, army);
         }
 
         private (int x, int y) moveTargetCoordinates(Province province, Direction direction)
@@ -127,10 +151,10 @@ namespace KI_Fun.Backend
                     return (province.X - 1, province.Y);
 
                 case Direction.North:
-                    return (province.X, province.Y-1);
+                    return (province.X, province.Y - 1);
 
                 case Direction.South:
-                    return (province.X, province.Y+1);
+                    return (province.X, province.Y + 1);
 
                 default:
                     return (province.X, province.Y);
@@ -140,7 +164,7 @@ namespace KI_Fun.Backend
         public bool TryGetMoveTarget(Province province, Direction direction, out Province target)
         {
             (int x, int y) = moveTargetCoordinates(province, direction);
-            if (x >= 0 && x < FieldWidth && y>= 0 && y<FieldHeight)
+            if (x >= 0 && x < FieldWidth && y >= 0 && y < FieldHeight)
             {
                 target = _provinces[x, y];
                 return true;
@@ -150,16 +174,6 @@ namespace KI_Fun.Backend
                 target = null;
                 return false;
             }
-        }
-
-        public bool IsArmyAllowedInProvince(Army army, Province province)
-        {
-            return army.BlackFlagged || IsCountryAllowedInCountry(army.Owner, province.Owner);
-        }
-
-        public bool IsCountryAllowedInCountry(Country armyOwnerCountry, Country provinceOwnerCountry)
-        {
-            return armyOwnerCountry.MarchAccess.Contains(provinceOwnerCountry) || armyOwnerCountry.War.Contains(provinceOwnerCountry);
         }
 
         public BasePlayer GetOwnerOfProvince(int x, int y)

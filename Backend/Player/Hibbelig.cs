@@ -12,21 +12,21 @@ namespace KI_Fun.Backend.Player
             {
                 if (a.MovingDirection == Direction.None)
                 {
-                    if (api.IsArmyMovePossible(a, Direction.East))
+                    if (a.IsArmyMovePossible(this, Direction.East))
                     {
-                        api.TrySendArmy(a, Direction.East);
+                        a.TrySendArmy(this, Direction.East);
                     }
-                    else if (api.IsArmyMovePossible(a, Direction.North))
+                    else if (a.IsArmyMovePossible(this, Direction.North))
                     {
-                        api.TrySendArmy(a, Direction.North);
+                        a.TrySendArmy(this, Direction.North);
                     }
-                    else if (api.IsArmyMovePossible(a, Direction.West))
+                    else if (a.IsArmyMovePossible(this, Direction.West))
                     {
-                        api.TrySendArmy(a, Direction.West);
+                        a.TrySendArmy(this, Direction.West);
                     }
-                    else if (api.IsArmyMovePossible(a, Direction.South))
+                    else if (a.IsArmyMovePossible(this, Direction.South))
                     {
-                        api.TrySendArmy(a, Direction.South);
+                        a.TrySendArmy(this, Direction.South);
                     }
                 }
             }

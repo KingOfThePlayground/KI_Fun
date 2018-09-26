@@ -5,7 +5,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -32,6 +31,7 @@ namespace KI_Fun
         public FormMain()
         {
             _logQueue = new ConcurrentQueue<Backend.Messages.Message>();
+            Backend.Messages.Message.LogQueue = _logQueue;
             _fieldSize = _provincesPerRow * _provinceSize;
             _countryBrushes = new Dictionary<BasePlayer, Brush>();
             _playerNumber = new Dictionary<BasePlayer, int>();
@@ -72,7 +72,7 @@ namespace KI_Fun
             while (_logQueue.Count != 0)
             {
                 if (_logQueue.TryDequeue(out var msg))
-                    textBoxLog.AppendText(msg.ToString());
+                    textBoxLog.AppendText(msg.ToString()+"\r\n");
             }
         }
 
@@ -98,7 +98,10 @@ namespace KI_Fun
                     int y = army.InProvince.Y;
                     RectangleF circle = new RectangleF((x + 0.2f) * _provinceSize, (y + 0.2f) * _provinceSize, 0.6f * _provinceSize, 0.6f * _provinceSize);
                     e.Graphics.FillEllipse(Brushes.Black, circle);
-                    e.Graphics.FillPie(_countryBrushes[army.Owner.Player], circle.X + 2, circle.Y + 2, circle.Width - 4, circle.Height - 4, _playerNumber[army.Owner.Player] * anglePerPlayer - 90, anglePerPlayer);
+                    if (army.BlackFlagged)
+                        e.Graphics.FillPie(Brushes.DimGray, circle.X + 2, circle.Y + 2, circle.Width - 4, circle.Height - 4, _playerNumber[army.Owner.Player] * anglePerPlayer - 90, anglePerPlayer);
+                    else
+                        e.Graphics.FillPie(_countryBrushes[army.Owner.Player], circle.X + 2, circle.Y + 2, circle.Width - 4, circle.Height - 4, _playerNumber[army.Owner.Player] * anglePerPlayer - 90, anglePerPlayer);
                 }
             }
         }
