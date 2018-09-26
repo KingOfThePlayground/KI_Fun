@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KI_Fun.Backend.API;
+using KI_Fun.Backend.Player;
 
 namespace KI_Fun.Backend
 {
@@ -27,6 +28,13 @@ namespace KI_Fun.Backend
         public Queue<Direction> MoveQueue { get; private set; }
 
         public Province InProvince { get; set; }
+        public int X { get => InProvince.X; }
+        public int Y { get => InProvince.Y; }
+
+        public override bool IsNeighbouring(BasePlayer player)
+        {
+            return IsNeighbouring(player, X, Y);
+        }
 
         public void ProgressMove()
         {

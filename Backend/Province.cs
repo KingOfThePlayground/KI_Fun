@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KI_Fun.Backend.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,12 @@ namespace KI_Fun.Backend
         public int X { get => _x; }
 
         public int Y { get => _y; }
+
+
+        public override bool IsNeighbouring(BasePlayer player)
+        {
+            return IsNeighbouring(player, X, Y);
+        }
 
         public Province(int x, int y)
         {

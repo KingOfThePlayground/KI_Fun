@@ -1,9 +1,5 @@
 ﻿using KI_Fun.Backend.API;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using KI_Fun.Backend.Player;
 
 namespace KI_Fun.Backend
 {
@@ -24,5 +20,39 @@ namespace KI_Fun.Backend
         }
 
         public Country Owner { get; set; }
+
+        public virtual bool IsNeighbouring(BasePlayer player)
+        {
+            return false;
+        }
+
+        public bool IsNeighbouring(BasePlayer player, int x, int y)
+        {
+            Country country = player.Country;
+            int fieldWidth = country.AllProvinces.GetLength(0);
+            int fieldHeight = country.AllProvinces.GetLength(1);
+            Province p;
+
+            for (int i = x - 1; i <= x + 1; i++)
+                for (int j = y - 1; j <= y + 1; j++)
+                {
+                    if (i >= 0 && i < fieldWidth && j >= 0 && j < fieldHeight)
+                    {
+                        p = country.AllProvinces[i, j];
+                        if (p.Owner == country)
+                            return true;
+                        foreach (Army a in p.ArmiesInProvince)
+                            if (a.Owner == country)
+                                return true;
+                    }
+                }
+
+            return false;
+        }
+
+        private bool coordinateNeighbourhoodCheck(int x_1, int y_1, int x_2, int y_2)
+        {
+            return (x_1 - x_2) * (x_1 - x_2) + (y_1 - y_2) * (y_1 - y_2) < 3;
+        }
     }
 }

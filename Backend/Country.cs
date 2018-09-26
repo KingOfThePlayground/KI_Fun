@@ -10,20 +10,20 @@ namespace KI_Fun.Backend
     class Country : Wrapped
     {
         double _money=0;
-        HashSet<Province> _provinces;
-        public HashSet<Province> Provinces { get => _provinces; }
+        public HashSet<Province> CountryProvinces { get; private set; }
+        public Province[,] AllProvinces { get; private set; }
 
         public HashSet<Army> Armies { get; protected set; }
-        BasePlayer _player;
-        public BasePlayer Player { get => _player; }
+        public BasePlayer Player { get; private set; }
 
         public HashSet<Country> War { get; protected set; }
         public HashSet<Country> MarchAccess { get; protected set; }
 
-        public Country(Player.BasePlayer player)
+        public Country(Player.BasePlayer player, Province[,] allProvinces)
         {
-            _provinces = new HashSet<Province>();
-            _player = player;
+            AllProvinces = allProvinces;
+            CountryProvinces = new HashSet<Province>();
+            Player = player;
             Owner = this;
             Armies = new HashSet<Army>();
             War = new HashSet<Country>();

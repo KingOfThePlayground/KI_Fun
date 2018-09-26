@@ -58,7 +58,7 @@ namespace KI_Fun.Backend
                     _provinces[x, y] = p;
                     int ownerNum = rand.Next(0, _players.Count);
                     p.Owner = _countries[ownerNum];
-                    _countries[ownerNum].Provinces.Add(p);
+                    _countries[ownerNum].CountryProvinces.Add(p);
                     if (!countryHasArmy[ownerNum])
                     {
                         CreateArmy(_countries[ownerNum], p, 100);
