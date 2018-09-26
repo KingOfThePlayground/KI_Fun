@@ -1,4 +1,5 @@
-﻿using KI_Fun.Backend.Player;
+﻿using KI_Fun.Backend.API;
+using KI_Fun.Backend.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KI_Fun.Backend
 {
-    class Country : Wrapped
+    class Country : Wrapped<CountryApi>
     {
         double _money=0;
         public HashSet<Province> CountryProvinces { get; private set; }

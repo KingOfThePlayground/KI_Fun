@@ -1,9 +1,6 @@
-﻿using KI_Fun.Backend.Player;
+﻿using KI_Fun.Backend.Messages;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KI_Fun.Backend.API
 {
@@ -12,7 +9,7 @@ namespace KI_Fun.Backend.API
         private Game _game;
         private Player.BasePlayer _player;
 
-        private static Dictionary<Api, Wrapped> _accessDictionary = new Dictionary<Api, Wrapped>();
+        private static Dictionary<Api, Wrapped> _innerDictionary = new Dictionary<Api, Wrapped>();
 
         public GameApi(Game game, Player.BasePlayer player)
         {
@@ -20,12 +17,12 @@ namespace KI_Fun.Backend.API
             _player = player;
         }
 
-        public CountryApi Country { get => (CountryApi)_player.Country.Api; }
+        public CountryApi Country { get => _player.Country.Api; }
 
-        public static void AddAccess(Wrapped wrapped)
+        public static void AddInner(Wrapped wrapped)
         {
-            if (!_accessDictionary.ContainsKey(wrapped.Api))
-                _accessDictionary.Add(wrapped.Api, wrapped);
+            if (!_innerDictionary.ContainsKey(wrapped.Api))
+                _innerDictionary.Add(wrapped.Api, wrapped);
         }
 
         public bool TryDeclareWar(Country country)
@@ -45,7 +42,7 @@ namespace KI_Fun.Backend.API
         {
             if (IsArmyMovePossible(armyApi, direction))
             {
-                Army army = (Army)_accessDictionary[armyApi];
+                Army army = (Army)_innerDictionary[armyApi];
                 if (army.Owner.Player != _player)
                     throw new AccessViolationException("Zugriff auf fremde Armee");
                 army.MovingDirection = direction;
@@ -58,7 +55,7 @@ namespace KI_Fun.Backend.API
 
         public void EnqueMarchOrder(ArmyApi armyApi, Direction direction)
         {
-            Army army = (Army)_accessDictionary[armyApi];
+            Army army = (Army)_innerDictionary[armyApi];
             if (army.Owner.Player != _player)
                 throw new AccessViolationException("Zugriff auf fremde Armee");
             army.MoveQueue.Enqueue(direction);
@@ -66,12 +63,12 @@ namespace KI_Fun.Backend.API
 
         public bool TryGetMoveTarget(ArmyApi armyApi, Direction direction, out Province target)
         {
-            return _game.TryGetMoveTarget(((Army)(Army)_accessDictionary[armyApi]).InProvince, direction, out target);
+            return _game.TryGetMoveTarget(((Army)_innerDictionary[armyApi]).InProvince, direction, out target);
         }
 
         public bool IsArmyMovePossible(ArmyApi armyApi, Direction direction)
         {
-            Army army = (Army)_accessDictionary[armyApi];
+            Army army = (Army)_innerDictionary[armyApi];
             if (_game.TryGetMoveTarget(army.InProvince, direction, out Province target))
                 return _game.IsArmyAllowedInProvince(army, target);
             else
