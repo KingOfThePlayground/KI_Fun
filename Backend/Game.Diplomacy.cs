@@ -29,7 +29,23 @@ namespace KI_Fun.Backend
             return NewOffers.Contains(offer) || OldOffers.Contains(offer);
         }
 
-		public void AddOffer(DiplomaticMessage offer)
+        public bool RetrieveOffer(DiplomaticMessage offer)
+        {
+            if (NewOffers.Contains(offer))
+            {
+                NewOffers.Remove(offer);
+                return true;
+            }
+            else if (OldOffers.Contains(offer))
+            {
+                OldOffers.Remove(offer);
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public void AddOffer(DiplomaticMessage offer)
         {
             NewOffers.Add(offer);
         }

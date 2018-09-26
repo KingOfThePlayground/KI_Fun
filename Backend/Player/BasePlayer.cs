@@ -9,7 +9,7 @@ using KI_Fun.Backend.Messages;
 
 namespace KI_Fun.Backend.Player
 {
-    abstract class BasePlayer
+    abstract class BasePlayer : Wrapped<PlayerApi>
     {
         static int counter = 0;
         private string _name;

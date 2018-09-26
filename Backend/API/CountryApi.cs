@@ -6,6 +6,7 @@ namespace KI_Fun.Backend.API
     class CountryApi : Api
     {
         Country _country;
+        PlayerApi Player { get => _country.Player.Api; }
 
         public IEnumerable<ArmyApi> Armies { get => new ApiCollection<ArmyApi>(_country.Armies); }
         public CountryApi(Country inner) : base(inner)
@@ -19,7 +20,7 @@ namespace KI_Fun.Backend.API
         public ProvinceApi GetProvinceAt(int x, int y)
         {
             if (x >= 0 && x < FieldWidth && y >= 0 && y < FieldHeight)
-                return (ProvinceApi)_country.AllProvinces[x, y].Api;
+                return _country.AllProvinces[x, y].Api;
             else
                 throw new ArgumentOutOfRangeException("Die Koordinaten sind außerhalb der Karte.");
         }

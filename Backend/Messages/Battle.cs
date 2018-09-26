@@ -14,14 +14,24 @@ namespace KI_Fun.Backend.Messages
         public ApiCollection<ArmyApi> EnemeyArmies { get; private set; }
         public int FriendlyLosses { get; private set; }
         public int EnemyLosses { get; private set; }
+        private Country _countryA;
+        private Country _countryB;
 
-        public Battle(ProvinceApi province, ApiCollection<ArmyApi> friendlyArmies, ApiCollection<ArmyApi> enemeyArmies, int friendlyLosses, int enemyLosses) : base(MessageType.Battle)
+        public Battle(Province province, List<Army> friendlyArmies, List<Army> enemyArmies, int friendlyLosses, int enemyLosses) : base(MessageType.Battle)
         {
-            Province = province;
-            FriendlyArmies = friendlyArmies;
-            EnemeyArmies = enemeyArmies;
+            Province = province.Api;
+            FriendlyArmies = new ApiCollection<ArmyApi>(friendlyArmies);
+            EnemeyArmies = new ApiCollection<ArmyApi>(enemyArmies);
             FriendlyLosses = friendlyLosses;
             EnemyLosses = enemyLosses;
+            _countryA = friendlyArmies[0].Owner;
+            _countryB = enemyArmies[0].Owner;
+            _countryA.Player.MessageQueue.Enqueue(this);
+        }
+
+        public override string ToString()
+        {
+            return $"In der Provinz {Province} hat eine Schlacht zwischen {_countryA.Player} und {_countryB.Player} stattgefunden.";
         }
     }
 }

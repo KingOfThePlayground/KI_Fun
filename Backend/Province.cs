@@ -29,10 +29,5 @@ namespace KI_Fun.Backend
             ArmiesInProvince = new HashSet<Army>();
             Api = new ProvinceApi(this);
         }
-
-        public bool ArmyAllowedInProvince(Army army)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
