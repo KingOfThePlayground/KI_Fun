@@ -22,5 +22,7 @@ namespace KI_Fun.Backend
                 GameApi.AddAccess(this);
             }
         }
+
+        public Country Owner { get; set; }
     }
 }

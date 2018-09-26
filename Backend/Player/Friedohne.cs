@@ -11,7 +11,7 @@ namespace KI_Fun.Backend.Player
     {
         public override void MakeMove(GameApi api)
         {
-            api.
+            
         }
     }
 }

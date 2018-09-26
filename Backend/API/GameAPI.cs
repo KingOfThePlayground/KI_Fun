@@ -36,7 +36,7 @@ namespace KI_Fun.Backend.API
             {
                 country.War.Add(_player.Country);
                 _player.Country.War.Add(country);
-                country.Owner.MessageQueue.Enqueue(new WarDeclarationMessage(_player.Country, country));
+                country.Player.MessageQueue.Enqueue(new WarDeclarationMessage(_player.Country, country));
                 return true;
             }
         }
@@ -46,9 +46,10 @@ namespace KI_Fun.Backend.API
             if (IsArmyMovePossible(armyApi, direction))
             {
                 Army army = (Army)_accessDictionary[armyApi];
-                if (army.OwnerCountry.Owner != _player)
+                if (army.Owner.Player != _player)
                     throw new AccessViolationException("Zugriff auf fremde Armee");
-                army.MoveQueue.Enqueue(direction);
+                army.MovingDirection = direction;
+                army.MovingProgress = 0d;
                 return true;
             }
             else
@@ -58,7 +59,7 @@ namespace KI_Fun.Backend.API
         public void EnqueMarchOrder(ArmyApi armyApi, Direction direction)
         {
             Army army = (Army)_accessDictionary[armyApi];
-            if (army.OwnerCountry.Owner != _player)
+            if (army.Owner.Player != _player)
                 throw new AccessViolationException("Zugriff auf fremde Armee");
             army.MoveQueue.Enqueue(direction);
         }

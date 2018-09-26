@@ -15,7 +15,7 @@ namespace KI_Fun.Backend
         public Army(int size, Country country)
         {
             Size = size;
-            OwnerCountry = country;
+            Owner = country;
             MoveQueue = new Queue<Direction>();
             Api = new ArmyApi(this);
         }
@@ -26,7 +26,6 @@ namespace KI_Fun.Backend
         public double MovingProgress { get; set; }
         public Queue<Direction> MoveQueue { get; private set; }
 
-        public Country OwnerCountry { get; private set; }
         public Province InProvince { get; set; }
 
         public void ProgressMove()
