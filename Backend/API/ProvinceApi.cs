@@ -26,6 +26,19 @@ namespace KI_Fun.Backend.API
             return false;
         }
 
+        public bool TryGetBesieger(BasePlayer player, out CountryApi besieger)
+        {
+            if (_province.IsNeighbouring(player))
+            {
+                besieger = _province.Siege.Besieger.Api;
+                return true;
+            }
+            besieger = null;
+            return false;
+        }
+
+
+
         public ProvinceApi(Province inner) : base(inner)
         {
             _province = inner;

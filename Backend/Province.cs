@@ -12,10 +12,11 @@ namespace KI_Fun.Backend
         readonly int _x;
         readonly int _y;
 
+        public Siege Siege { get; set; }
+
         public int X { get => _x; }
 
         public int Y { get => _y; }
-
 
         public override bool IsNeighbouring(BasePlayer player)
         {
@@ -28,6 +29,7 @@ namespace KI_Fun.Backend
             _y = y;
             ArmiesInProvince = new HashSet<Army>();
             Api = new ProvinceApi(this);
+            Siege = null;
         }
 
         public bool ArmyAllowedInProvince(Army army)

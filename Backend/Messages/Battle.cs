@@ -15,11 +15,11 @@ namespace KI_Fun.Backend.Messages
         public int FriendlyLosses { get; private set; }
         public int EnemyLosses { get; private set; }
 
-        public Battle(ProvinceApi province, ApiCollection<ArmyApi> friendlyArmies, ApiCollection<ArmyApi> enemeyArmies, int friendlyLosses, int enemyLosses) : base(MessageType.Battle)
+        public Battle(Province province, IEnumerable<Army> friendlyArmies, IEnumerable<Army> enemeyArmies, int friendlyLosses, int enemyLosses) : base(MessageType.Battle)
         {
-            Province = province;
-            FriendlyArmies = friendlyArmies;
-            EnemeyArmies = enemeyArmies;
+            Province = province.Api;
+            FriendlyArmies = new ApiCollection<ArmyApi> (friendlyArmies);
+            EnemeyArmies = new ApiCollection<ArmyApi>(enemeyArmies);
             FriendlyLosses = friendlyLosses;
             EnemyLosses = enemyLosses;
         }

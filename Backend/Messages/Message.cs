@@ -21,5 +21,5 @@ namespace KI_Fun.Backend.Messages
         }
     }
 
-    enum MessageType { Military=0x10, ArmyCompleted, Battle, Diplomatic=0x1, PeaceOffer, PeaceOfferAccepted, MarchAccessRequest, MarchAccessAccepted, OwnMarchAccessRevoked, OtherMarchAccessRevoked, WarDeclaration}
+    enum MessageType { Military=0x10, ArmyCompleted, Battle, SiegeStarted, SiegeSuccessful, SiegePaused, SiegeBroken, Diplomatic=0x1, PeaceOffer, PeaceOfferAccepted, MarchAccessRequest, MarchAccessAccepted, OwnMarchAccessRevoked, OtherMarchAccessRevoked, WarDeclaration}
 }
