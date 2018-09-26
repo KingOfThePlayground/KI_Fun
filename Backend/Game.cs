@@ -37,7 +37,7 @@ namespace KI_Fun.Backend
 
             for (int i = 0; i < _players.Count; i++)
             {
-                _countries.Add(new Country(_players[i]));
+                _countries.Add(new Country(_players[i],_provinces));
                 _players[i].Country = _countries[i];
             }
         }
