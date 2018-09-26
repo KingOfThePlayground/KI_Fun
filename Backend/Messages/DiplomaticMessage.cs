@@ -16,6 +16,13 @@ namespace KI_Fun.Backend.Messages
             passive.Player.MessageQueue.Enqueue(this);
         }
 
+        public DiplomaticMessage(MessageType messageType, DiplomaticMessage offer) : base (messageType)
+        {
+            _active = offer._passive;
+            _passive = offer._active;
+            _passive.Player.MessageQueue.Enqueue(this);
+        }
+
         public override string ToString()
         {
             switch (MessageType)

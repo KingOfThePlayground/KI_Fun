@@ -31,10 +31,5 @@ namespace KI_Fun.Backend
             Api = new ProvinceApi(this);
             Siege = null;
         }
-
-        public bool ArmyAllowedInProvince(Army army)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
