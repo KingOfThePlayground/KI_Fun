@@ -76,6 +76,11 @@ namespace KI_Fun.Backend
             {
                 moveArmy(a);
             }
+
+            foreach (Province province in _provinces)
+            {
+                ProcessBattles(province.ArmiesInProvince);
+            }
         }
 
         private void moveArmy(Army army)

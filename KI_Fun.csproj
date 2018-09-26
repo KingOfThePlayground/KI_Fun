@@ -74,6 +74,7 @@
     <Compile Include="Backend\Country.cs" />
     <Compile Include="Backend\Direction.cs" />
     <Compile Include="Backend\Game.cs" />
+    <Compile Include="Backend\Game.War.cs" />
     <Compile Include="Backend\Messages\ArmyCompleted.cs" />
     <Compile Include="Backend\Messages\Battle.cs" />
     <Compile Include="Backend\Messages\DiplomaticMessage.cs" />
