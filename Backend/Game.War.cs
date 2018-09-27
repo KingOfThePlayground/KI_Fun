@@ -8,13 +8,17 @@ namespace KI_Fun.Backend
 {
     partial class Game
     {
-        private void processBattles(HashSet<Army> armies)
+        private void processBattles(Province province)
         {
+            HashSet<Army> armies = province.ArmiesInProvince;
+            if (armies == null)
+                return;
+
             //sort armies by country
             Dictionary<Country, List<Army>> armiesOfCountry = new Dictionary<Country, List<Army>>();
             foreach (Army army in armies)
             {
-                if (army.Size == 0)
+                if (army.Size == 0 || army.BlackFlagged)
                     continue;
                 if (!armiesOfCountry.ContainsKey(army.Owner))
                 {
@@ -45,11 +49,14 @@ namespace KI_Fun.Backend
                     }
                 }
             }
+
             if (warPairs.Count == 0)
                 return;
             Random r = new Random();
-            (Country, Country) theChosenOnes = warPairs[r.Next(0, warPairs.Count)];
-            (int lossA, int lossB) = computeBattleResults(armiesOfCountry[theChosenOnes.Item1], armiesOfCountry[theChosenOnes.Item2]);
+            (Country countryA, Country countryB) = warPairs[r.Next(0, warPairs.Count)];
+            (int lossA, int lossB) = computeBattleResults(armiesOfCountry[countryA], armiesOfCountry[countryB]);
+            new Messages.Battle(province, armiesOfCountry[countryA], armiesOfCountry[countryB], lossA, lossB);
+            new Messages.Battle(province, armiesOfCountry[countryB], armiesOfCountry[countryA], lossB, lossA);
         }
 
         const double DAMAGE_FACTOR = 1e-2;
@@ -63,8 +70,8 @@ namespace KI_Fun.Backend
             Random r = new Random();
             int lossA = (int)Math.Round(DAMAGE_FACTOR * (r.Next(0, 6) + r.Next(0, 6) + r.Next(0, 6)) * Math.Min(sizeA, sizeB) * Math.Log(sizeB + 1) / Math.Log(sizeA + 1) + 0.5);
             int lossB = (int)Math.Round(DAMAGE_FACTOR * (r.Next(0, 6) + r.Next(0, 6) + r.Next(0, 6)) * Math.Min(sizeA, sizeB) * Math.Log(sizeA + 1) / Math.Log(sizeB + 1) + 0.5);
-            killSoldiers(armiesA, lossA);
-            killSoldiers(armiesB, lossB);
+            killSoldiers(armiesA, Math.Min(lossA,sizeA));
+            killSoldiers(armiesB, Math.Min(lossB,sizeB));
             return (lossA, lossB);
         }
 
