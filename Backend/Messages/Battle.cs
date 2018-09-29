@@ -31,7 +31,7 @@ namespace KI_Fun.Backend.Messages
 
         public override string ToString()
         {
-            return $"In der Provinz {Province} hat eine Schlacht zwischen {_countryA.Player} und {_countryB.Player} stattgefunden.";
+            return $"In der Provinz {Province} hat eine Schlacht zwischen {_countryA.Player} ({FriendlyLosses} Soldaten verloren) und {_countryB.Player} ({EnemyLosses} Soldaten verloren) stattgefunden.";
         }
     }
 }

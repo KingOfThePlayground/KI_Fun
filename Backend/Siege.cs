@@ -10,7 +10,7 @@ namespace KI_Fun.Backend
 {
     class Siege : Wrapped<SiegeApi>
     {
-        public Siege(Country besieger, Province province)
+        public Siege(Game game, Country besieger, Province province) : base(game)
         {
             Api = new SiegeApi(this);
             Province = province;
@@ -20,7 +20,7 @@ namespace KI_Fun.Backend
 
         public override bool IsNeighbouring(BasePlayer player)
         {
-            return IsNeighbouring(player, Province.X, Province.Y);
+            return IsNeighbouring(player, Owner.AllProvinces, Province.X, Province.Y);
         }
 
         public Province Province { get; private set; }

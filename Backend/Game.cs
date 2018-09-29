@@ -12,7 +12,7 @@ namespace KI_Fun.Backend
         Province[,] _provinces;
         public Province[,] Provinces { get => _provinces; }
 
-        List<Country> _countries;
+        public List<Country> Countries { get; private set; }
         public HashSet<Army> Armies { get; protected set; }
 
         int _fieldSize;
@@ -30,11 +30,11 @@ namespace KI_Fun.Backend
 
         private void setupCountries()
         {
-            _countries = new List<Country>();
+            Countries = new List<Country>();
 
             for (int i = 0; i < _players.Count; i++)
             {
-                _countries.Add(new Country(this, _players[i]));
+                Countries.Add(new Country(this, _players[i]));
             }
         }
 
@@ -53,11 +53,11 @@ namespace KI_Fun.Backend
                     p = new Province(this, x, y);
                     _provinces[x, y] = p;
                     int ownerNum = rand.Next(0, _players.Count);
-                    p.Owner = _countries[ownerNum];
-                    _countries[ownerNum].CountryProvinces.Add(p);
+                    p.Owner = Countries[ownerNum];
+                    Countries[ownerNum].CountryProvinces.Add(p);
                     if (!countryHasArmy[ownerNum])
                     {
-                        CreateArmy(_countries[ownerNum], p, 100);
+                        CreateArmy(Countries[ownerNum], p, 100);
                         countryHasArmy[ownerNum] = true;
                     }
                 }
@@ -65,7 +65,7 @@ namespace KI_Fun.Backend
 
         public void Tick()
         {
-            foreach (Country c in _countries)
+            foreach (Country c in Countries)
             {
                 c.CalculateMoney();
                 if (c.Money < 0)
@@ -97,7 +97,7 @@ namespace KI_Fun.Backend
                         CreateArmy(province.Owner, province, 1000);
                     }
                 }
-                processBattles(province.ArmiesInProvince);
+                processBattles(province);
             }
         }
 

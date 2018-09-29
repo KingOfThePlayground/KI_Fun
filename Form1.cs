@@ -72,7 +72,7 @@ namespace KI_Fun
             while (_logQueue.Count != 0)
             {
                 if (_logQueue.TryDequeue(out var msg))
-                    textBoxLog.AppendText(msg.ToString()+"\r\n");
+                    textBoxLog.AppendText(msg.ToString() + "\r\n");
             }
         }
 
@@ -80,6 +80,7 @@ namespace KI_Fun
         {
             e.Graphics.TranslateTransform(_xOriginMainPictureBox, _yOriginMainPictureBox);
             int xStep = _provinceSize, yStep = _provinceSize;
+            RectangleF circle;
 
             lock (_threadLock)
             {
@@ -89,15 +90,20 @@ namespace KI_Fun
                     {
                         e.Graphics.FillRectangle(_countryBrushes[_game.Provinces[x, y].Owner.Player], new RectangleF(x * xStep, y * yStep, xStep, yStep));
                         e.Graphics.DrawRectangle(Pens.Black, new Rectangle(x * xStep, y * yStep, xStep, yStep));
+                        if (_game.Provinces[x, y].ArmiesInProvince.Count != 0)
+                        {
+                            circle = new RectangleF((x + 0.2f) * _provinceSize, (y + 0.2f) * _provinceSize, 0.6f * _provinceSize, 0.6f * _provinceSize);
+                            e.Graphics.FillEllipse(Brushes.Black, circle);
+                        }
                     }
                 }
                 float anglePerPlayer = 360.0f / _countryBrushes.Count;
+
                 foreach (Army army in _game.Armies)
                 {
                     int x = army.InProvince.X;
                     int y = army.InProvince.Y;
-                    RectangleF circle = new RectangleF((x + 0.2f) * _provinceSize, (y + 0.2f) * _provinceSize, 0.6f * _provinceSize, 0.6f * _provinceSize);
-                    e.Graphics.FillEllipse(Brushes.Black, circle);
+                    circle = new RectangleF((x + 0.2f) * _provinceSize, (y + 0.2f) * _provinceSize, 0.6f * _provinceSize, 0.6f * _provinceSize);
                     if (army.BlackFlagged)
                         e.Graphics.FillPie(Brushes.DimGray, circle.X + 2, circle.Y + 2, circle.Width - 4, circle.Height - 4, _playerNumber[army.Owner.Player] * anglePerPlayer - 90, anglePerPlayer);
                     else

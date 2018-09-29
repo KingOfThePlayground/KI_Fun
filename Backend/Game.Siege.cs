@@ -97,7 +97,7 @@ namespace KI_Fun.Backend
 
             if (maxPair.Value > MIN_ARMY_SIZE_FOR_SIEGE)
             {
-                province.Siege = new Siege(maxPair.Key, province);
+                province.Siege = new Siege(this, maxPair.Key, province);
             }
 
         }

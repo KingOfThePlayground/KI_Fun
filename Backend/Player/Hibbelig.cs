@@ -7,6 +7,14 @@ namespace KI_Fun.Backend.Player
     {
         public override void MakeMove(GameApi api)
         {
+            IEnumerable<CountryApi> countries = api.Countries;
+            CountryApi myCountry = api.Country;
+
+            foreach(CountryApi c in countries)
+            {
+                myCountry.TryDeclareWar(this, c);
+            }
+
             IEnumerable<ArmyApi> armies = api.Country.Armies;
             foreach (ArmyApi a in armies)
             {

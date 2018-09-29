@@ -115,7 +115,7 @@ namespace KI_Fun.Backend.API
             if (_country.Owner.Player != player)
                 return false;
             Country country = countryApi._country;
-            if (this._country.MarchAccess.Contains(country) || country.War.Contains(country))
+            if (this._country.MarchAccess.Contains(country) || _country.War.Contains(country))
                 return false;
             else
             {

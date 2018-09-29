@@ -78,10 +78,12 @@ namespace KI_Fun.Backend
         //Kills soldiers in Army List. ammount should not be bigger than the total size of the armies
         private void killSoldiers(List<Army> armies, int amount)
         {
+            int reduce;
             for (int i = 0; amount > 0; i++)
             {
-                amount -= Math.Min(amount, armies[i].Size);
-                armies[i].Size -= Math.Min(amount, armies[i].Size);
+                reduce = Math.Min(amount, armies[i].Size);
+                amount -= reduce;
+                armies[i].Size -= reduce;
             }
         }
 
